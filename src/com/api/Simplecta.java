@@ -13,11 +13,11 @@ import android.app.Activity;
 
 public class Simplecta {
 	
-	static final String BASE_URL = "website.com";
+	static final String BASE_URL = "www.simplecta.com";
 	static final int CONNECTION_RETRY = 5;
 	
 	Activity context;
-	ArrayList<Cookie> cookies = new ArrayList<Cookie>();
+	String cookies = null;
 	boolean isLogedin = false;
 	boolean connectionError = true;
 	
@@ -32,10 +32,11 @@ public class Simplecta {
 	}
 	
 
-	//the access token from google server being passed for login cookie
+	/*
+	 * the access token from google server being passed for login cookie
+	 */
 	private boolean login(String accessToken){
 		try {
-			
 			/*
 			 * the url connects with a https connection that takes in two get parameters 
 			 * "auth" for the access token and
@@ -49,7 +50,9 @@ public class Simplecta {
 			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
 				return false;
 			}
-				
+			
+			cookies = connection.getHeaderField("Set-Cookie");
+			/*
 			//splits the cookies by their separator ';'
 	 		String[] cookies = connection.getHeaderField("Set-Cookie").split(";");
 	 		
@@ -62,6 +65,7 @@ public class Simplecta {
 	 		if(this.cookies.size() == 0){
 	 			return false;
 	 		}
+	 		*/
 			
 			isLogedin = true;
 			return false;
@@ -75,33 +79,43 @@ public class Simplecta {
 	
 	}
 	
-	//prepared a connection by setting the cookies and returns a URLConnection that is ready to connect
-	private URLConnection prepConnection(String subURL) throws Exception{
+	/*
+	 * prepared a connection by setting the cookies and returns a URLConnection that is ready to connect
+	 */
+	private HttpURLConnection prepConnection(String subURL) throws Exception{
 		URL myUrl = new URL(BASE_URL+subURL);
-		URLConnection urlCon = myUrl.openConnection();
-		
+		HttpURLConnection connection = (HttpURLConnection) myUrl.openConnection();
+		/*
 		String cookieString = "";
 		for(Cookie cookie: this.cookies){
 			cookieString = cookieString + cookie.getCookie();
-		}
+		}*/
 		
 		//setting the cookies
-		urlCon.setRequestProperty("Cookie", cookieString);
+		connection.setRequestProperty("Cookie", cookies);
 		
+		connection.connect();//sends in the cookies
+		cookies = connection.getHeaderField("Set-Cookie");
 		//returns the prepared connection ready to be connected
-		return urlCon;
+		return connection;
 	}
 	
 	
-	//home page loads all feed
-	ArrayList<String> showAll(){
+	/*
+	 * home page loads all feed
+	 */
+	public ArrayList<ArticleData> showAll(){
 		try {
-			URLConnection urlCon = prepConnection("/showAll/");
-			urlCon.connect();//sends in the cookies
+			HttpURLConnection connection = prepConnection("/showAll/");
+			
+			//if connection returned some kind of error
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+				return null;
+			}
 			
 			//reader to read in html code line by line
 			BufferedReader reader  = new BufferedReader(
-					new InputStreamReader(urlCon.getInputStream()));
+					new InputStreamReader(connection.getInputStream()));
 			
 			//holds the list of articles
 			ArrayList<ArticleData> articles = new ArrayList<ArticleData>();
@@ -111,7 +125,7 @@ public class Simplecta {
 			while ((line = reader.readLine()) != null) {
 				//save the feed
 	            System.out.println(line);
-	            if(line.contains("")){
+	            if(line.contains("item")){
 	            	if(!block.isEmpty()){
 	            		articles.add(new ArticleData(block));
 	            		block = "";
@@ -120,6 +134,7 @@ public class Simplecta {
 	            }
 	        }
 			
+			return articles;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -128,45 +143,151 @@ public class Simplecta {
 	}
 	
 	
-	//add rss subscription
-	void addRSS(){
-		
+	/*
+	 * add rss subscription
+	 */
+	public boolean addRSS(String rssUrl){
+		try {
+			HttpURLConnection connection =  prepConnection("/addRSS/?url="+rssUrl);
+			
+			//if connection returned some kind of error
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+				return false;
+			}
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	
-	//add atom subscription
-	void addAtom(){
-		
+	/*
+	 * add atom subscription
+	 */
+	public boolean addAtom(String atomUrl){
+		try {
+			HttpURLConnection connection = (HttpURLConnection) prepConnection("/addAtom/?url="+atomUrl);
+			
+			//if connection returned some kind of error
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+				return false;
+			}
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	
-	//unsubscribe from feed
-	void unsubscribe(){
-		
+	/*
+	 * unsubscribe from feed
+	 */
+	public boolean unsubscribe(String feedUrl){
+		try {
+			HttpURLConnection connection = (HttpURLConnection) prepConnection(feedUrl);
+			
+			//if connection returned some kind of error
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+				return false;
+			}
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	
-	//mark as read
-	void mark(){
-		
+	/*
+	 * mark as unread
+	 */
+	public boolean markUnread(String key){
+		 try {
+			HttpURLConnection connection = (HttpURLConnection) prepConnection("/markUnread/?"+key);
+			
+			//if connection returned some kind of error
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+				return false;
+			}
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	
-	//mark as unread
-	void unMark(){
-		
+	/*
+	 * mark as read
+	 */
+	public boolean markRead(String key){
+		 try {
+			HttpURLConnection connection = (HttpURLConnection) prepConnection("/markRead/?"+key);
+			
+			//if connection returned some kind of error
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+				return false;
+			}
+			
+			return true;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	
-	//see all the subscriptions
-	void feeds(){
-		
+	/*
+	 * see all the subscriptions
+	 */
+	ArrayList<Feed> feeds(){
+		try {
+			HttpURLConnection connection = prepConnection("/feed/");
+			
+			//if connection returned some kind of error
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+				return null;
+			}
+			
+			//reader to read in html code line by line
+			BufferedReader reader  = new BufferedReader(
+					new InputStreamReader(connection.getInputStream()));
+			
+			//holds the list of feed
+			ArrayList<Feed> feed = new ArrayList<Feed>();
+			
+			String line = null;
+			String block = "";
+			while ((line = reader.readLine()) != null) {
+				//save the feed
+	            System.out.println(line);
+	            if(line.contains("item")){
+	            	if(!block.isEmpty()){
+	            		feed.add(new Feed(block));
+	            		block = "";
+	            	}
+	            	block = block+line;
+	            }
+	        }
+			return feed;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
-	//update to check for feed
-	String update(){
-		return "";
-	}
 
 }
 
@@ -243,6 +364,10 @@ class ArticleData{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
-	
+
+}
+
+class Feed{
+	Feed(String html){
+	}
 }
