@@ -1,4 +1,9 @@
-package com.example.cheetahreader;
+package com.View;
+
+import com.example.cheetahreader.R;
+import com.example.cheetahreader.R.id;
+import com.example.cheetahreader.R.layout;
+import com.example.cheetahreader.R.menu;
 
 import android.os.Bundle;
 import android.app.Activity;
