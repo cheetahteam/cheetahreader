@@ -22,9 +22,22 @@ public class Simplecta {
 	String cookies = null;
 	boolean isLogedin = false;
 	boolean connectionError = true;
+	private static Simplecta instance = null;
 	
+	private Simplecta() {
+
+	}
 	
-	Simplecta( Context context, String accessToken){
+	public static Simplecta getInstance() {
+
+		if( instance == null ) {
+	        instance = new Simplecta();
+	        
+	      }
+	    return instance;
+	}
+	
+	public void init( Context context, String accessToken ){
 		this.context = context;
 		int loginAttempt = 0;
 		while(loginAttempt < CONNECTION_RETRY){

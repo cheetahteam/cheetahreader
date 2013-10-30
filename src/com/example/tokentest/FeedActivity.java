@@ -2,6 +2,7 @@ package com.example.tokentest;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.AsyncTask;
@@ -12,11 +13,10 @@ import android.widget.ProgressBar;
 
 public class FeedActivity extends Activity {
 
-	private String 		_strToken;
-	private Simplecta 	_simplecta;
-	private FeedManager _feedManager;
-	private ProgressBar _progressBar;
-	
+	private Simplecta 					_simplecta;
+	private FeedManager 				_feedManager;
+	private ProgressBar 				_progressBar;
+	private AuthPreferences 			_authPreferences;
 	private static final String TAG = 	"CC FeedActivity";
 	
 	@Override
@@ -24,7 +24,9 @@ public class FeedActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_token);
 		
-
+		_feedManager = FeedManager.getInstance();
+		_authPreferences = new AuthPreferences(this);
+		_simplecta = Simplecta.getInstance();
 		
 	}
 
@@ -35,6 +37,12 @@ public class FeedActivity extends Activity {
 		return true;
 	}
 	
+	public void drawFeeds() {
+		// Get the current articles
+		ArrayList<Article> articles = _feedManager.getArticles();
+		// Draw Text Button Links
+		
+	}
 	public  class AbstractUpdateFeedTask extends AsyncTask<Void, Void, Void>{
 	    private static final String TAG = "CC TokenInfoTask";
 	    //private static final String NAME_KEY = "given_name";
@@ -60,6 +68,8 @@ public class FeedActivity extends Activity {
 	    	//InputStream is = simplecta.getHTMLStream();
 	    	InputStream is = null;
 	    	try {
+	    		_simplecta.init( getApplicationContext(), _authPreferences.getToken() );
+	    		is = _simplecta.getHTMLStream();
 				_feedManager.updateFeeds( is );
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -71,12 +81,7 @@ public class FeedActivity extends Activity {
 	    
 	    @Override
 	    public void onPostExecute(Void result) {
-	    	if ( _strToken != null ) {
-	    		//Toast.makeText(getApplicationContext(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ), "token: " + _strToken, Toast.LENGTH_SHORT  ).show();
-	    		// notify the user is authenticated, token is recieved
-	    		//startUpdateActivity();
-	    		//finish();
-	    	}
+	    	drawFeeds();
         }
 	}
 }

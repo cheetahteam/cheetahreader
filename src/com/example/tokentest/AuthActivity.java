@@ -2,6 +2,11 @@ package com.example.tokentest;
 
 import java.io.IOException;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.accounts.AccountManagerCallback;
+import android.accounts.AccountManagerFuture;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -10,85 +15,121 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.Toast;
 
+@SuppressLint("NewApi")
 public class AuthActivity extends Activity {
-	
-	private AuthHelper 					_authHelper;
+	 
 	private String[] 					_accountNames;
 	private static final String TAG = 	"CC AuthActivity";
 	private static final String SCOPE = "oauth2:https://www.googleapis.com/auth/userinfo.profile";
 	private String 						_strToken;
-	private FeedManager 				_feedManager;
 	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_token);
-		
-		_authHelper = new AuthHelper();
-		_accountNames = _authHelper.getAccountNames( this );
-		//if ( _accountNames.length == 0 ) {
-		getTokenFromAccount();
-
+	  	private static final int AUTHORIZATION_CODE = 1993;
+		private static final int ACCOUNT_CODE = 1601;
+	 
+		private AuthPreferences authPreferences;
+		private AccountManager accountManager;
+	 
+		@Override
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+	 
+			accountManager = AccountManager.get(this);
+	 
+			authPreferences = new AuthPreferences(this);
+			if (authPreferences.getUser() != null
+					&& authPreferences.getToken() != null) {
+				doCoolAuthenticatedStuff();
+			} else {
+				chooseAccount();
+			}
+		}
+	 
+		private void doCoolAuthenticatedStuff() {
+			Log.d("AuthApp", authPreferences.getToken());
+			// Launch the feed activity
+			Intent intent = new Intent( this, FeedActivity.class );
+			startActivity( intent );
+		}
+	 
+		private void chooseAccount() {
+			// use https://github.com/frakbot/Android-AccountChooser for
+			// compatibility with older devices
+			Intent intent = AccountManager.newChooseAccountIntent(null, null,
+					new String[] { "com.google" }, false, null, null, null, null);
+			startActivityForResult(intent, ACCOUNT_CODE);
+		}
+	 
+		private void requestToken() {
+			Account userAccount = null;
+			String user = authPreferences.getUser();
+			for (Account account : accountManager.getAccountsByType("com.google")) {
+				if (account.name.equals(user)) {
+					userAccount = account;
+	 
+					break;
+				}
+			}
+	 
+			accountManager.getAuthToken(userAccount, "oauth2:" + SCOPE, null, this,
+					new OnTokenAcquired(), null);
+		}
+	 
+		/**
+		 * call this method if your token expired, or you want to request a new
+		 * token for whatever reason. call requestToken() again afterwards in order
+		 * to get a new token.
+		 */
+		private void invalidateToken() {
+			AccountManager accountManager = AccountManager.get(this);
+			accountManager.invalidateAuthToken("com.google",
+					authPreferences.getToken());
+	 
+			authPreferences.setToken(null);
+		}
+	 
+		@Override
+		protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+			super.onActivityResult(requestCode, resultCode, data);
+	 
+			if (resultCode == RESULT_OK) {
+				if (requestCode == AUTHORIZATION_CODE) {
+					requestToken();
+				} else if (requestCode == ACCOUNT_CODE) {
+					String accountName = data
+							.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
+					authPreferences.setUser(accountName);
+	 
+					// invalidate old tokens which might be cached. we want a fresh
+					// one, which is guaranteed to work
+					invalidateToken();
+	 
+					requestToken();
+				}
+			}
+		}
+	 
+		private class OnTokenAcquired implements AccountManagerCallback<Bundle> {
+	 
+			@Override
+			public void run(AccountManagerFuture<Bundle> result) {
+				try {
+					Bundle bundle = result.getResult();
+	 
+					Intent launch = (Intent) bundle.get(AccountManager.KEY_INTENT);
+					if (launch != null) {
+						startActivityForResult(launch, AUTHORIZATION_CODE);
+					} else {
+						String token = bundle
+								.getString(AccountManager.KEY_AUTHTOKEN);
+	 
+						authPreferences.setToken(token);
+	 
+						// Launch the feed activity
+						doCoolAuthenticatedStuff();
+					}
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.token, menu);
-		return true;
-	}
-	
-	public String getToken() {
-		return _strToken;
-	}
-	private void getTokenFromAccount() {
-		AbstractGetTokenTask taskFetchToken = new AbstractGetTokenTask( this, _accountNames[0], SCOPE, 101 );
-		taskFetchToken.execute();	
-	}
-	
-	private void startUpdateActivity() {
-		
-		Intent intent = new Intent( this, UpdateActivity.class );
-		intent.putExtra("userToken", _strToken );
-		startActivity( intent );
-	}
-	
-	public  class AbstractGetTokenTask extends AsyncTask<Void, Void, Void>{
-	    private static final String TAG = "CC AbstractGetTokenTask";
-	    //private static final String NAME_KEY = "given_name";
-	    protected AuthActivity activity;
-
-	    protected String strScope;
-	    protected String strEmail;
-	    protected int nRequestCode;
-	    protected AuthHelper authHelper;
-	    protected String strToken;
-	    
-	    AbstractGetTokenTask( AuthActivity activity, String email, String scope, int requestCode) {
-	        this.activity = activity;
-	        this.strScope = scope;
-	        this.strEmail = email;
-	        this.nRequestCode = requestCode;
-	        authHelper = new AuthHelper();
-	    }
-
-	    @Override
-	    protected Void doInBackground(Void... params) {
-
-	    	_strToken = authHelper.fetchToken( activity, strEmail, strScope );
-			return null;
-
-	    }
-	    
-	    @Override
-	    public void onPostExecute(Void result) {
-	    	if ( _strToken != null ) {
-	    		//Toast.makeText(getApplicationContext(                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       ), "token: " + _strToken, Toast.LENGTH_SHORT  ).show();
-	    		// notify the user is authenticated, token is recieved
-	    		//startUpdateActivity();
-	    		finish();
-	    	}
-        }
-	}
-	
-}

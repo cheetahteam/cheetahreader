@@ -59,7 +59,7 @@ public class UpdateActivity extends Activity {
 		// e.g "http://porluz.sytes.net:8888/index_2.html"
 		//doc = Jsoup.connect("http://porluz.sytes.net:8888/index_2.html").get();
 		
-		_simplecta = new Simplecta( this.getApplicationContext(), _strToken );
+		//_simplecta = new Simplecta( this.getApplicationContext(), _strToken );
 		_feedManager = FeedManager.getInstance();
 		
 		//Document doc = _feedManager.getDocument(); // this is calling a temporary url to parse
