@@ -27,6 +27,7 @@ public class FeedActivity extends Activity {
 		_feedManager = FeedManager.getInstance();
 		_authPreferences = new AuthPreferences(this);
 		_simplecta = Simplecta.getInstance();
+		_simplecta.init( this, _authPreferences.getToken() );
 		
 	}
 
@@ -68,7 +69,6 @@ public class FeedActivity extends Activity {
 	    	//InputStream is = simplecta.getHTMLStream();
 	    	InputStream is = null;
 	    	try {
-	    		_simplecta.init( getApplicationContext(), _authPreferences.getToken() );
 	    		is = _simplecta.getHTMLStream();
 				_feedManager.updateFeeds( is );
 			} catch (Exception e) {
