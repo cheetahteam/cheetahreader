@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 public class Simplecta {
 	
@@ -60,12 +61,18 @@ public class Simplecta {
 			 * "auth" for the access token and
 			 * "continue" for the redirect url
 			 */
-			URL myUrl = new URL("https://"+BASE_URL+"/_ah/login?continue=http://"+BASE_URL+"/&auth=" + accessToken);
+			
+			//URL myUrl = new URL("https://"+BASE_URL+"/_ah/login?continue=http://"+BASE_URL+"/&auth=" + accessToken)
+			URL myUrl = new URL("https://simplecta.appspot.com/_ah/login?continue=http://localhost/&auth="+accessToken);
+			//URL myUrl = new URL("http://www.google.com");
+			
+			//URL myUrl = new URL("https://"+BASE_URL+"/_ah/login?continue=http://"+BASE_URL+"/&auth=" + accessToken);
 			HttpURLConnection connection = (HttpURLConnection) myUrl.openConnection();
 			connection.connect();
+			int code = connection.getResponseCode();
 			
 			//if connection returned some kind of error
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
+			if ( ! (connection.getResponseCode() == HttpURLConnection.HTTP_OK || connection.getResponseCode() == 302) ){
 				return false;
 			}
 			
@@ -122,15 +129,18 @@ public class Simplecta {
 	/*
 	 * home page loads all feed
 	 */
-	public ArrayList<ArticleData> showAll(){
+	public InputStream showAll(){
+		HttpURLConnection connection = null;
+		
 		try {
-			HttpURLConnection connection = prepConnection("/showAll/");
+			connection = prepConnection("/showAll/");
 			
 			//if connection returned some kind of error
 			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
 				return null;
 			}
 			
+			/*
 			//reader to read in html code line by line
 			BufferedReader reader  = new BufferedReader(
 					new InputStreamReader(connection.getInputStream()));
@@ -152,12 +162,19 @@ public class Simplecta {
 	            }
 	        }
 			
-			return articles;
+			return articles;*/
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		return null;
+		InputStream is = null;
+		try {
+			is = connection.getInputStream();
+		}
+		catch( Exception ex ) {
+			Log.e("SIMP", ex.getMessage());
+		}
+		return is;
 	}
 	
 	

@@ -1,4 +1,4 @@
-package com.example.tokentest;
+package com.auth;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;

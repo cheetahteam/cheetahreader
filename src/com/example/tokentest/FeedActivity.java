@@ -4,12 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import com.auth.AuthPreferences;
+
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 public class FeedActivity extends Activity {
 
@@ -29,6 +33,8 @@ public class FeedActivity extends Activity {
 		_authPreferences = new AuthPreferences(this);
 		_simplecta = Simplecta.getInstance();
 		//_simplecta.init( this, _authPreferences.getToken() );
+		AbstractUpdateFeedTask task = new AbstractUpdateFeedTask();
+		task.execute();
 		
 	}
 
@@ -42,25 +48,23 @@ public class FeedActivity extends Activity {
 	public void drawFeeds() {
 		// Get the current articles
 		ArrayList<Article> articles = _feedManager.getArticles();
+		TextView list = (TextView) findViewById(R.id.list);
+		String feed = "";
+		for (int i = 0; i < articles.size(); i++ ) {
+			feed = feed + articles.get(i).getTitle() + "\n";
+		}
+		list.setText(feed);
+		
+		
 		// Draw Text Button Links
 		
 	}
 	public  class AbstractUpdateFeedTask extends AsyncTask<Void, Void, Void>{
 	    private static final String TAG = "CC TokenInfoTask";
 	    //private static final String NAME_KEY = "given_name";
-	    protected FeedActivity activity;
-	    protected String strScope;
-	    protected String strEmail;
-	    protected int nRequestCode;
-	    protected AuthHelper authHelper;
-	    protected String strToken;
 	    
-	    AbstractUpdateFeedTask( FeedActivity activity, String email, String scope, int requestCode) {
-	        this.activity = activity;
-	        this.strScope = scope;
-	        this.strEmail = email;
-	        this.nRequestCode = requestCode;
-	        authHelper = new AuthHelper();
+	    AbstractUpdateFeedTask( ) {
+
 	    }
 
 	    @Override
@@ -70,7 +74,7 @@ public class FeedActivity extends Activity {
 	    	//InputStream is = simplecta.getHTMLStream();
 	    	InputStream is = null;
 	    	try {
-	    		is = _simplecta.getHTMLStream();
+	    		is = _simplecta.showAll();
 				_feedManager.updateFeeds( is );
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

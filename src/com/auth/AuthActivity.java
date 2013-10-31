@@ -1,7 +1,12 @@
-package com.example.tokentest;
+package com.auth;
 
 import java.io.IOException;
 
+import com.example.tokentest.FeedActivity;
+import com.example.tokentest.R;
+import com.example.tokentest.Simplecta;
+import com.example.tokentest.R.id;
+import com.example.tokentest.R.layout;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -28,28 +33,15 @@ import android.widget.Toast;
 @SuppressLint("NewApi")
 public class AuthActivity extends Activity {
 	 
-	/* Access to common Network functions like checking if the user is online */
-	private NetworkManager 							_networkManager;
-	/* Used to store and retrieve the user account and token associated with it globally */
+
+ 
 	private AuthPreferences 						_authPreferences;
-	/* Needed to access google accounts on the phone */
 	private AccountManager 							_accountManager;
-	/* A drop down selector for the user to select an account from accountManager */
 	private Spinner 								_accountTypesSpinner;
-	/* Used to store the names (emails) of the google accounts */
 	private String[] 								_accountNames;
-	/* Debug TAG */
 	private static final String TAG = 				"CC AuthActivity";
-<<<<<<< HEAD
-	/* AUTH Scope, used to give access to part of user's information and access to parts of Google
-	 *  used 'ah' as per http://blog.notdot.net/2010/05/Authenticating-against-App-Engine-from-an-Android-app */
 	private static final String SCOPE = 			"ah";//"oauth2:https://www.googleapis.com/auth/userinfo.profile";
-	/* AUTH code used to test against if authorization successful, can be anything */
-=======
-	private static final String SCOPE = 			"oauth2:https://www.googleapis.com/auth/userinfo.profile";
->>>>>>> parent of ef80766... changed auth scope, simplecta url, and response code handling
   	private static final int AUTHORIZATION_CODE = 	1993;
-  	/* Account code used to test against if account retrieval is  successful, can be anything */
 	private static final int ACCOUNT_CODE = 		1601;
 	
 	@Override
@@ -57,12 +49,6 @@ public class AuthActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_auth);
 		
-		_networkManager = NetworkManager.getInstance();
-		
-		// Need online access to sign in, if there's none, do not proceed
-		if ( _networkManager.isOnline( this.getApplicationContext() ) ){
-			finish();
-		}
 		_accountManager = AccountManager.get(this);
 		_accountNames = getAccountNames( this );
 		_authPreferences = new AuthPreferences(this);
@@ -162,7 +148,6 @@ public class AuthActivity extends Activity {
 	    protected String strScope;
 	    protected String strEmail;
 	    protected int nRequestCode;
-	    protected AuthHelper auth;
 	    protected String strToken;
 	    
 	    AbstractGetTokenTask( AuthActivity activity, String email, String scope, int requestCode) {
@@ -170,16 +155,18 @@ public class AuthActivity extends Activity {
 	        this.strScope = scope;
 	        this.strEmail = email;
 	        this.nRequestCode = requestCode;
-	        auth = new AuthHelper();
+	        //auth = new AuthHelper();
 	    }
 
 	    @Override
 	    protected Void doInBackground(Void... params) {
 
-	    	strToken = auth.fetchToken( activity, strEmail, strScope );
+	    	strToken = fetchToken( activity, strEmail, strScope );
+	    	Log.d(TAG,  strToken );
 	    	_authPreferences.setToken( strToken );
 	    	Simplecta simplecta = Simplecta.getInstance();
 			simplecta.init( activity, strToken );
+			
 			
 	    	return null;
 	    }
@@ -188,7 +175,9 @@ public class AuthActivity extends Activity {
 	    public void onPostExecute(Void result) {
 	    	if ( strToken != null ) {
 	    		Toast.makeText(getApplicationContext(), "token: " + strToken, Toast.LENGTH_SHORT  ).show();
-	    		finish();
+	    		Intent intent = new Intent( AuthActivity.this, FeedActivity.class);
+	    		startActivity( intent );
+	    		
 	    	}
         }
 	}

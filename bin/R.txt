@@ -57,9 +57,10 @@ int drawable ic_plusone_standard_off_client 0x7f02001b
 int drawable ic_plusone_tall_off_client 0x7f02001c
 int id accounts_tester_account_types_spinner 0x7f050006
 int id accounts_tester_account_types_spinner_label 0x7f050005
-int id action_settings 0x7f050008
+int id action_settings 0x7f050009
 int id btnLogin 0x7f050007
 int id hybrid 0x7f050004
+int id list 0x7f050008
 int id none 0x7f050000
 int id normal 0x7f050001
 int id satellite 0x7f050002

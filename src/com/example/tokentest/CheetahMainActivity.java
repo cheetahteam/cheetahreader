@@ -12,7 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import com.example.tokentest.ListenerAwareAsyncTask.OnCompleteListener;
+
+import com.auth.AuthActivity;
 
 public class CheetahMainActivity extends Activity {
 
@@ -32,23 +33,13 @@ public class CheetahMainActivity extends Activity {
 		// First try to Login with a Google Account and retrieve the access token
 		Intent intent = new Intent( this, AuthActivity.class );
 		startActivity( intent );
-		int result = 10001;
-		startActivityForResult( intent, result );
+		//int result = 10001;
+		//startActivityForResult( intent, result );
 		
 		// After AuthActivty is done, onActivityResult gets called with the token extra.
 		// validate the token, then launch feed activty with the token
 		// feedactivty on create will call it's update method
 
-	}
-	
-	@Override
-	public void onActivityResult( int result, int b, Intent i) {
-		
-		if ( result == 1001 ) {
-			Bundle a = i.getBundleExtra("token");
-			a.get("token");
-		}
-	
 	}
 
 	@Override
