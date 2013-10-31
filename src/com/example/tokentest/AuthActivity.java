@@ -40,10 +40,14 @@ public class AuthActivity extends Activity {
 	private String[] 								_accountNames;
 	/* Debug TAG */
 	private static final String TAG = 				"CC AuthActivity";
+<<<<<<< HEAD
 	/* AUTH Scope, used to give access to part of user's information and access to parts of Google
 	 *  used 'ah' as per http://blog.notdot.net/2010/05/Authenticating-against-App-Engine-from-an-Android-app */
 	private static final String SCOPE = 			"ah";//"oauth2:https://www.googleapis.com/auth/userinfo.profile";
 	/* AUTH code used to test against if authorization successful, can be anything */
+=======
+	private static final String SCOPE = 			"oauth2:https://www.googleapis.com/auth/userinfo.profile";
+>>>>>>> parent of ef80766... changed auth scope, simplecta url, and response code handling
   	private static final int AUTHORIZATION_CODE = 	1993;
   	/* Account code used to test against if account retrieval is  successful, can be anything */
 	private static final int ACCOUNT_CODE = 		1601;

@@ -60,18 +60,12 @@ public class Simplecta {
 			 * "auth" for the access token and
 			 * "continue" for the redirect url
 			 */
-			
-			//URL myUrl = new URL("https://"+BASE_URL+"/_ah/login?continue=http://"+BASE_URL+"/&auth=" + accessToken)
-			URL myUrl = new URL("https://simplecta.appspot.com/_ah/login?continue=" + BASE_URL + "/&auth="+accessToken);
-			
-			
-			//URL myUrl = new URL("https://"+BASE_URL+"/_ah/login?continue=http://"+BASE_URL+"/&auth=" + accessToken);
+			URL myUrl = new URL("https://"+BASE_URL+"/_ah/login?continue=http://"+BASE_URL+"/&auth=" + accessToken);
 			HttpURLConnection connection = (HttpURLConnection) myUrl.openConnection();
 			connection.connect();
-			int code = connection.getResponseCode();
 			
 			//if connection returned some kind of error
-			if ( ! (connection.getResponseCode() == HttpURLConnection.HTTP_OK || connection.getResponseCode() == 302) ){
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
 				return false;
 			}
 			
