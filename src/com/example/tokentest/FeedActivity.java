@@ -22,12 +22,12 @@ public class FeedActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_token);
+		setContentView(R.layout.activity_feed);
 		
 		_feedManager = FeedManager.getInstance();
 		_authPreferences = new AuthPreferences(this);
 		_simplecta = Simplecta.getInstance();
-		_simplecta.init( this, _authPreferences.getToken() );
+		//_simplecta.init( this, _authPreferences.getToken() );
 		
 	}
 

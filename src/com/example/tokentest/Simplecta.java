@@ -43,6 +43,7 @@ public class Simplecta {
 		while(loginAttempt < CONNECTION_RETRY){
 			if(login(accessToken))
 				connectionError = false;
+			loginAttempt++;
 		}
 	}
 	

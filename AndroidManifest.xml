@@ -30,11 +30,17 @@
             android:name="com.example.tokentest.AuthActivity"
             android:label="@string/title_activity_update" >
         </activity>
+        <activity
+            android:name="com.example.tokentest.FeedActivity"
+            android:label="@string/title_activity_feed" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.NETWORK" />
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCOUNT_MANAGER" />
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
 
 </manifest>
