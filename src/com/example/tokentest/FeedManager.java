@@ -19,14 +19,14 @@ public class FeedManager {
 	
 	private static String TAG = 			"CC FeedManager";
 	private ArrayList<Article> 				_alArticles;
-	private ArrayList<Feed> 				_feeds;
+	private ArrayList<Feed> 				_alFeeds;
 	private final static int NOT_FOUND = 	-1;
 	private static FeedManager instance = 	null;
 	
 	private FeedManager() {
 		
 		_alArticles = new ArrayList<Article>();
-		_feeds = new ArrayList<Feed>();
+		_alFeeds = new ArrayList<Feed>();
 
 	}
 	
@@ -43,15 +43,15 @@ public class FeedManager {
 		return _alArticles;
 	}
 	public ArrayList<Feed>  getFeeds() {
-		return _feeds;
+		return _alFeeds;
 	}
 
 	public Feed getFeed( String strFeedKey ) {
 		int index = findFeed( strFeedKey );
-		if ( index < 0 || index > _feeds.size()-1 )
+		if ( index < 0 || index > _alFeeds.size()-1 )
 			return null;
 		else
-			return _feeds.get( index );
+			return _alFeeds.get( index );
 	}
 	public Article getArticle( String strArticleKey ) {
 		int index = findArticle( strArticleKey );
@@ -218,12 +218,12 @@ public class FeedManager {
 	}
 	private int findFeed( Feed feed ) {
 		
-		return _feeds.indexOf( feed );
+		return _alFeeds.indexOf( feed );
 	}
 	private int findFeed( String strFeedKey ) {
 		Feed feed = new Feed();
 		feed.setFeedKey( strFeedKey );
-		return _feeds.indexOf( feed );
+		return _alFeeds.indexOf( feed );
 	}
 	
 	private void fillFeeds() {
@@ -244,12 +244,12 @@ public class FeedManager {
 			int feedIndex = findFeed( feed );
 			if ( feedIndex == NOT_FOUND ) {
 				feed.AddArticle( currArticle );
-				_feeds.add( feed );
+				_alFeeds.add( feed );
 			}
 			else {
-				feed = _feeds.get( feedIndex );
+				feed = _alFeeds.get( feedIndex );
 				feed.AddArticle( currArticle );
-				_feeds.set( feedIndex, feed );
+				_alFeeds.set( feedIndex, feed );
 			}
 			
 		}
