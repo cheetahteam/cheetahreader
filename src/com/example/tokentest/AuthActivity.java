@@ -35,7 +35,7 @@ public class AuthActivity extends Activity {
 	private Spinner 								_accountTypesSpinner;
 	private String[] 								_accountNames;
 	private static final String TAG = 				"CC AuthActivity";
-	private static final String SCOPE = 			"oauth2:https://www.googleapis.com/auth/userinfo.profile";
+	private static final String SCOPE = 			"ah";//"oauth2:https://www.googleapis.com/auth/userinfo.profile";
   	private static final int AUTHORIZATION_CODE = 	1993;
 	private static final int ACCOUNT_CODE = 		1601;
 	
