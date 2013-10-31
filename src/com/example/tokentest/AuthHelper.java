@@ -28,6 +28,8 @@ public class AuthHelper {
         return names;
     }
 	
+	
+	
 	/**
 	   * Get a authentication token if one is not available. Throws an exception or non empty string
 	   */

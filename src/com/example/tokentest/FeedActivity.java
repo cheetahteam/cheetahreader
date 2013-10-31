@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 public class FeedActivity extends Activity {
 
+	/* Manages API calls to Google App Engine app: Simplecta */
 	private Simplecta 					_simplecta;
 	private FeedManager 				_feedManager;
 	private ProgressBar 				_progressBar;
