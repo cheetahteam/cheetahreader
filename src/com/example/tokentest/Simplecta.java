@@ -16,7 +16,7 @@ import android.util.Log;
 
 public class Simplecta {
 	
-	static final String BASE_URL = "www.simplecta.com";
+	static final String BASE_URL = "http://www.simplecta.com";
 	static final int CONNECTION_RETRY = 5;
 	
 	Context context;
@@ -42,8 +42,10 @@ public class Simplecta {
 		this.context = context;
 		int loginAttempt = 0;
 		while(loginAttempt < CONNECTION_RETRY){
-			if(login(accessToken))
+			if(login(accessToken)) {
 				connectionError = false;
+				break;
+			}
 			loginAttempt++;
 		}
 	}
@@ -68,7 +70,9 @@ public class Simplecta {
 			
 			//URL myUrl = new URL("https://"+BASE_URL+"/_ah/login?continue=http://"+BASE_URL+"/&auth=" + accessToken);
 			HttpURLConnection connection = (HttpURLConnection) myUrl.openConnection();
+			connection.setFollowRedirects(false);
 			connection.connect();
+			
 			int code = connection.getResponseCode();
 			
 			//if connection returned some kind of error
@@ -93,7 +97,7 @@ public class Simplecta {
 	 		*/
 			
 			isLogedin = true;
-			return false;
+			return true;
 			
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -131,44 +135,13 @@ public class Simplecta {
 	 */
 	public InputStream showAll(){
 		HttpURLConnection connection = null;
+		InputStream is = null;
 		
 		try {
 			connection = prepConnection("/showAll/");
 			
 			//if connection returned some kind of error
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
-				return null;
-			}
-			
-			/*
-			//reader to read in html code line by line
-			BufferedReader reader  = new BufferedReader(
-					new InputStreamReader(connection.getInputStream()));
-			
-			//holds the list of articles
-			ArrayList<ArticleData> articles = new ArrayList<ArticleData>();
-			
-			String line = null;
-			String block = "";
-			while ((line = reader.readLine()) != null) {
-				//save the feed
-	            System.out.println(line);
-	            if(line.contains("item")){
-	            	//if(!block.isEmpty()){
-	            		//articles.add(new ArticleData(block));
-	            		//block = "";
-	            	//}
-	            	block = block+line;
-	            }
-	        }
-			
-			return articles;*/
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		InputStream is = null;
-		try {
+			int code = connection.getResponseCode();
 			is = connection.getInputStream();
 		}
 		catch( Exception ex ) {

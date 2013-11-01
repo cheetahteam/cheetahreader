@@ -32,9 +32,7 @@ public class FeedActivity extends Activity {
 		_feedManager = FeedManager.getInstance();
 		_authPreferences = new AuthPreferences(this);
 		_simplecta = Simplecta.getInstance();
-		//_simplecta.init( this, _authPreferences.getToken() );
-		AbstractUpdateFeedTask task = new AbstractUpdateFeedTask();
-		task.execute();
+		updateFeeds();
 		
 	}
 
@@ -55,17 +53,16 @@ public class FeedActivity extends Activity {
 		}
 		list.setText(feed);
 		
-		
-		// Draw Text Button Links
-		
 	}
+	
+	public void updateFeeds() {
+		AbstractUpdateFeedTask task = new AbstractUpdateFeedTask();
+		task.execute();
+	}
+	
 	public  class AbstractUpdateFeedTask extends AsyncTask<Void, Void, Void>{
-	    private static final String TAG = "CC TokenInfoTask";
-	    //private static final String NAME_KEY = "given_name";
-	    
-	    AbstractUpdateFeedTask( ) {
+	    private static final String TAG = "CC AbstractUpdateFeedTask";
 
-	    }
 
 	    @Override
 	    protected Void doInBackground(Void... params) {

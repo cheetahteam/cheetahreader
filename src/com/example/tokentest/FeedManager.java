@@ -61,20 +61,20 @@ public class FeedManager {
 			return _alArticles.get( index );
 	}
 	
-	public void updateFeeds( InputStream is ) throws NullPointerException, IOException {
+	public void updateFeeds( InputStream is ) throws Exception {
 		
 		Document doc = null;
 		if ( is == null ) {
 			Log.e( TAG, "The HTML input stream is null. cannot parse" );
 			return;
 		}
-		
+
 		try {
 			 doc = getDocument( is );
 			 fillArticles( doc );
 		}
 		catch( Exception ex ) {
-			Log.e( TAG, ex.getMessage() );
+			Log.e(TAG, ex.getMessage());
 			return;
 		}
     	fillFeeds();
@@ -102,7 +102,7 @@ public class FeedManager {
 	 */
 	private Document getDocument( InputStream inputStream ) throws IOException, NullPointerException {
 		
-		inputStream = getHTMLInputStream( "http://127.0.0.1:8888/index_2.html" );
+		//inputStream = getHTMLInputStream( "http://127.0.0.1:8888/index_2.html" );
 		Document doc = null;
 		if ( inputStream == null ) {
 			String err = "The HTML inputStream is null and will be unable to parse.";
@@ -111,7 +111,7 @@ public class FeedManager {
 		}	
 		
 		try {
-			doc = Jsoup.parse( inputStream, "UTF-8", null );
+			doc = Jsoup.parse( inputStream, "UTF-8", "" );
 			
 		} catch (IOException ex) {
 			// TODO Auto-generated catch block

@@ -165,6 +165,7 @@ public class AuthActivity extends Activity {
 	    	Log.d(TAG,  strToken );
 	    	_authPreferences.setToken( strToken );
 	    	Simplecta simplecta = Simplecta.getInstance();
+	    	Log.d(TAG,  "Simplecta initializing" );
 			simplecta.init( activity, strToken );
 			
 			
