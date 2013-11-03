@@ -61,16 +61,16 @@ public class FeedManager {
 			return _alArticles.get( index );
 	}
 	
-	public void updateFeeds( InputStream is ) throws Exception {
+	public void updateFeeds( String strHTML ) throws Exception {
 		
 		Document doc = null;
-		if ( is == null ) {
-			Log.e( TAG, "The HTML input stream is null. cannot parse" );
+		if ( strHTML == null ) {
+			Log.e( TAG, "The HTML string is null. cannot parse" );
 			return;
 		}
 
 		try {
-			 doc = getDocument( is );
+			 doc = getDocument( strHTML );
 			 fillArticles( doc );
 		}
 		catch( Exception ex ) {
@@ -100,20 +100,20 @@ public class FeedManager {
 	/*
 	 * Uses The JSoup parse to convert an HTML inputStream into a JSoup Document node
 	 */
-	private Document getDocument( InputStream inputStream ) throws IOException, NullPointerException {
+	private Document getDocument( String strHTML ) throws Exception {
 		
 		//inputStream = getHTMLInputStream( "http://127.0.0.1:8888/index_2.html" );
 		Document doc = null;
-		if ( inputStream == null ) {
-			String err = "The HTML inputStream is null and will be unable to parse.";
+		if ( strHTML == null ) {
+			String err = "The HTML string is null and will be unable to parse.";
 			Log.e( TAG, err );
 			throw new NullPointerException( err );			
 		}	
 		
 		try {
-			doc = Jsoup.parse( inputStream, "UTF-8", "" );
+			doc = Jsoup.parse( strHTML );
 			
-		} catch (IOException ex) {
+		} catch (Exception ex) {
 			// TODO Auto-generated catch block
 			Log.e( TAG, "Unable to get JSOUP Document from Stream." );
 			throw ex;

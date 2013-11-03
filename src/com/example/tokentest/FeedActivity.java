@@ -69,10 +69,11 @@ public class FeedActivity extends Activity {
 
 	    	
 	    	//InputStream is = simplecta.getHTMLStream();
-	    	InputStream is = null;
+	    	String strHTML = null;
 	    	try {
-	    		is = _simplecta.showAll();
-				_feedManager.updateFeeds( is );
+	    		strHTML = _simplecta.showAll();
+				_feedManager.updateFeeds( strHTML );
+	    		//_feedManager.updateFeeds( _simplecta.getAllURL() );
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				Log.e( TAG, e.getMessage() );
