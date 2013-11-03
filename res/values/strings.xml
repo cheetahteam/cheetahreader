@@ -8,5 +8,6 @@
     <string name="login">Login</string>
     <string name="title_activity_update">UpdateActivity</string>
     <string name="title_activity_feed">FeedActivity</string>
+    <string name="updateFeeds">Update Feeds</string>
 
 </resources>

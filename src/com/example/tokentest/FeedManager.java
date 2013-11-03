@@ -68,6 +68,10 @@ public class FeedManager {
 			Log.e( TAG, "The HTML string is null. cannot parse" );
 			return;
 		}
+		if ( strHTML == "" ) {
+			Log.e( TAG, "The HTML string is empty. cannot parse" );
+			return;
+		}
 
 		try {
 			 doc = getDocument( strHTML );

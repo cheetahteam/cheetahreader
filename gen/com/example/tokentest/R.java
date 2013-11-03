@@ -188,7 +188,8 @@ containing a value of this type.
     public static final class id {
         public static final int accounts_tester_account_types_spinner=0x7f050006;
         public static final int accounts_tester_account_types_spinner_label=0x7f050005;
-        public static final int action_settings=0x7f050009;
+        public static final int action_settings=0x7f05000a;
+        public static final int btnFeed=0x7f050009;
         public static final int btnLogin=0x7f050007;
         public static final int hybrid=0x7f050004;
         public static final int list=0x7f050008;
@@ -305,6 +306,7 @@ containing a value of this type.
         public static final int login=0x7f06001d;
         public static final int title_activity_feed=0x7f06001f;
         public static final int title_activity_update=0x7f06001e;
+        public static final int updateFeeds=0x7f060020;
     }
     public static final class style {
         /** 

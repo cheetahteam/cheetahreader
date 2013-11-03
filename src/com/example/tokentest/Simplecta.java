@@ -56,6 +56,8 @@ public class Simplecta {
 	}
 	
 	public void init( Context context, String accessToken ){
+		
+		// allocate
 		this.context = context;
 		http_client = new DefaultHttpClient();
 		
@@ -69,9 +71,7 @@ public class Simplecta {
 		}
 	}
 	
-	public InputStream getHTMLStream() {
-		return null;
-	}
+
 	/*
 	 * the access token from google server being passed for login cookie
 	 */
@@ -83,78 +83,13 @@ public class Simplecta {
 			 * "continue" for the redirect url
 			 */
 			client = AndroidHttpClient.newInstance("IntegrationTestAgent", context );
-			httpContext = AuthenticatedAppEngineContext.newInstance( context, BASE_URL);
+			httpContext = AuthenticatedAppEngineContext.newInstance( context, BASE_URL, accessToken);
 			    }
 		catch(Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
 		return true;
 			    
-
-			    
-			//URL myUrl = new URL("https://"+BASE_URL+"/_ah/login?continue=http://"+BASE_URL+"/&auth=" + accessToken)
-			//String url = "https://simplecta.appspot.com/_ah/login?continue=http://localhost/&auth="+accessToken;
-			//URL myUrl = new URL( url );
-			//URL myUrl = new URL("http://www.google.com");
-			//HttpURLConnection connection = (HttpURLConnection) myUrl.openConnection();
-			//connection.setFollowRedirects(false);
-
-			//connection.connect();
-			
-			//int code = connection.getResponseCode();
-			
-			//if connection returned some kind of error
-			//if ( ! (connection.getResponseCode() == HttpURLConnection.HTTP_OK || connection.getResponseCode() == 302) ){
-			//	return false;
-			//}
-
-			
-			//cookies = connection.getHeaderField("Set-Cookie");
-			/*
-			//splits the cookies by their separator ';'
-	 		String[] cookies = connection.getHeaderField("Set-Cookie").split(";");
-	 		
-	 		//saves the cookies in the cookies arraylist
-	 		for( String cookie : cookies ){
-	 			this.cookies.add(new Cookie(cookie));
-	 		}
-	 		
-	 		//no cookies were set login failed
-	 		if(this.cookies.size() == 0){
-	 			return false;
-	 		}
-	 		
-			
-			http_client.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false);
-            
-            HttpGet http_get = new HttpGet ( url );
-            HttpResponse response;
-            response = http_client.execute( http_get );
-            int codes = response.getStatusLine().getStatusCode();
-            cookies = http_client.getCookieStore().getCookies();
-                    // Response should be a redirect
-                   // return false;
-            
-            //for(org.apache.http.cookie.Cookie cookie : http_client.getCookieStore().getCookies()) {
-                    //if(cookie.getName().equals("SACSID"))
-                            //return true;
-            //}
-            
-            
-			isLogedin = true;
-			return true;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		finally {
-			http_client.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, true);
-		}
-		
-		isLogedin = false;
-		return false;
-		*/
-	
 	}
 	
 	public String getAllURL() {
@@ -165,16 +100,16 @@ public class Simplecta {
 	 * prepared a connection by setting the cookies and returns a URLConnection that is ready to connect
 	 */
 	private HttpResponse prepConnection(String subURL) throws Exception{
-		URL myUrl = new URL(BASE_URL+subURL);
-		
-		
-		//HttpGet http_get = new HttpGet(myUrl.toString());
-		//http_client.getParams().setBooleanParameter(ClientPNames.HANDLE_REDIRECTS, false);
-        
-        //HttpResponse result = http_client.execute(http_get);
-        
-        HttpGet get = new HttpGet(BASE_URL + subURL);
-        HttpResponse response = client.execute(get, httpContext);
+		HttpResponse response = null;
+		String strUrl = BASE_URL+subURL;
+		try {
+			HttpGet get = new HttpGet( strUrl );
+			// the cookie is stored in the httpcontext and ready to execute
+			response = client.execute( get, httpContext );
+		}
+		catch( Exception e ) {
+			Log.e(TAG, e.getMessage());
+		}
         
 		return response;
 	}
@@ -185,12 +120,9 @@ public class Simplecta {
 	 */
 	public String showAll(){
 		HttpResponse result = null;
-		InputStream is = null;
 		StringBuilder whole = new StringBuilder();
 		try {
 			result = prepConnection("/showAll/");
-			
-			//if connection returned some kind of error
 
             BufferedReader in = new BufferedReader(new InputStreamReader(result.getEntity().getContent()));
             String inputLine;
@@ -210,15 +142,10 @@ public class Simplecta {
 	
 	/*
 	 * add rss subscription
-	 
+	 */
 	public boolean addRSS(String rssUrl){
 		try {
-			HttpURLConnection connection =  prepConnection("/addRSS/?url="+rssUrl);
-			
-			//if connection returned some kind of error
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
-				return false;
-			}
+			HttpResponse result = prepConnection("/addRSS/?url="+rssUrl);
 			
 			return true;
 			
@@ -227,7 +154,6 @@ public class Simplecta {
 		}
 		return false;
 	}
-	*/
 	
 	
 	/*

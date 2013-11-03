@@ -11,6 +11,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -32,9 +35,23 @@ public class FeedActivity extends Activity {
 		_feedManager = FeedManager.getInstance();
 		_authPreferences = new AuthPreferences(this);
 		_simplecta = Simplecta.getInstance();
+		
+		initiliazeUpdateFeedsBtn();
+		
+		// Run the first update
 		updateFeeds();
 		
 	}
+	
+	private void initiliazeUpdateFeedsBtn() {
+        Button getToken = (Button) findViewById(R.id.btnFeed);
+        getToken.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            	updateFeeds();
+            }
+        });
+    }
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,10 +86,12 @@ public class FeedActivity extends Activity {
 
 	    	
 	    	//InputStream is = simplecta.getHTMLStream();
-	    	String strHTML = null;
+	    	String strArticlesHTML = null;
 	    	try {
-	    		strHTML = _simplecta.showAll();
-				_feedManager.updateFeeds( strHTML );
+	    		// Get the HTML String from the Simplecta connection
+	    		strArticlesHTML = _simplecta.showAll();
+	    		// Parse the html into the article/feed objects
+				_feedManager.updateFeeds( strArticlesHTML );
 	    		//_feedManager.updateFeeds( _simplecta.getAllURL() );
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

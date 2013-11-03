@@ -26,20 +26,18 @@ import android.os.Bundle;
 public final class AuthenticatedAppEngineContext implements HttpContext {
   private HttpContext delegate_;
   private CookieStore cookieStore_;
-  private AuthPreferences _authPreferences;
 
-  public static HttpContext newInstance(Context context, String uri)
+  public static HttpContext newInstance(Context context, String uri, String authToken )
       throws AccountsException, AuthenticationException {
     if (context == null)
       throw new IllegalArgumentException("context is null");
-    return new AuthenticatedAppEngineContext(context, uri);
+    return new AuthenticatedAppEngineContext(context, uri, authToken );
   }
 
-  private AuthenticatedAppEngineContext(Context context, String uri)
+  private AuthenticatedAppEngineContext(Context context, String uri, String authToken )
       throws AccountsException, AuthenticationException {
     delegate_ = new BasicHttpContext();
-    _authPreferences = new AuthPreferences( context );
-    String authToken = _authPreferences.getToken();
+
     AndroidHttpClient httpClient = AndroidHttpClient.newInstance(
         "GetAuthCookieClient", context);
     try {

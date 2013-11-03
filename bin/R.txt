@@ -57,7 +57,8 @@ int drawable ic_plusone_standard_off_client 0x7f02001b
 int drawable ic_plusone_tall_off_client 0x7f02001c
 int id accounts_tester_account_types_spinner 0x7f050006
 int id accounts_tester_account_types_spinner_label 0x7f050005
-int id action_settings 0x7f050009
+int id action_settings 0x7f05000a
+int id btnFeed 0x7f050009
 int id btnLogin 0x7f050007
 int id hybrid 0x7f050004
 int id list 0x7f050008
@@ -103,6 +104,7 @@ int string hello_world 0x7f06001b
 int string login 0x7f06001d
 int string title_activity_feed 0x7f06001f
 int string title_activity_update 0x7f06001e
+int string updateFeeds 0x7f060020
 int style AppBaseTheme 0x7f080000
 int style AppTheme 0x7f080001
 int[] styleable MapAttrs { 0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003, 0x7f010004, 0x7f010005, 0x7f010006, 0x7f010007, 0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b, 0x7f01000c, 0x7f01000d }
