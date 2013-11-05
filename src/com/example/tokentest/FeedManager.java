@@ -55,12 +55,19 @@ public class FeedManager {
 	}
 	public Article getArticle( String strArticleKey ) {
 		int index = findArticle( strArticleKey );
-		if ( index < 0 || index > _alArticles.size()-1 )
-			return null;
+		if ( index < 0 || index > _alArticles.size() )
+			throw new IllegalArgumentException( "Article not found" + strArticleKey );
 		else
 			return _alArticles.get( index );
 	}
 	
+	public Article getArticle( int nIndex ) {
+		if ( nIndex < 0 || nIndex > _alArticles.size() ) {
+			throw new IllegalArgumentException( "The article index is out of bounds." + nIndex );
+		}
+		Article article = _alArticles.get( nIndex );
+		return article;
+	}
 	public void updateFeeds( String strHTML ) throws Exception {
 		
 		Document doc = null;
