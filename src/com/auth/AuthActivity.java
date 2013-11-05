@@ -1,12 +1,8 @@
 package com.auth;
 
-import java.io.IOException;
-
 import com.example.tokentest.FeedActivity;
 import com.example.tokentest.R;
 import com.example.tokentest.Simplecta;
-import com.example.tokentest.R.id;
-import com.example.tokentest.R.layout;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
@@ -14,15 +10,13 @@ import com.google.android.gms.auth.UserRecoverableNotifiedException;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.accounts.AccountManagerCallback;
-import android.accounts.AccountManagerFuture;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -33,8 +27,6 @@ import android.widget.Toast;
 @SuppressLint("NewApi")
 public class AuthActivity extends Activity {
 	 
-
- 
 	private AuthPreferences 						_authPreferences;
 	private AccountManager 							_accountManager;
 	private Spinner 								_accountTypesSpinner;
@@ -42,8 +34,10 @@ public class AuthActivity extends Activity {
 	private static final String TAG = 				"CC AuthActivity";
 	private static final String SCOPE = 			"ah";//"oauth2:https://www.googleapis.com/auth/userinfo.profile";
   	private static final int AUTHORIZATION_CODE = 	1993;
-	private static final int ACCOUNT_CODE = 		1601;
 	
+  	/** progress dialog to show user that the update is processing. */
+    //ProgressDialog dialog;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,6 +47,9 @@ public class AuthActivity extends Activity {
 		_accountNames = getAccountNames( this );
 		_authPreferences = new AuthPreferences(this);
 		
+	    
+		// TODO if there are no account names,
+		// ask the user to create one
 		_accountTypesSpinner = initializeSpinner(
                 R.id.accounts_tester_account_types_spinner, _accountNames );
 		/*
@@ -79,14 +76,14 @@ public class AuthActivity extends Activity {
 	public String[] getAccountNames( Activity activity ) {
         Account[] accounts = _accountManager.getAccountsByType( GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE );
         String[] names = new String[accounts.length];
-        for (int i = 0; i < names.length; i++) {
+        for ( int i = 0; i < names.length; i++ ) {
             names[i] = accounts[i].name;
         }
         return names;
     }
 	
 	private void doCoolAuthenticatedStuff() {
-		Log.d("AuthApp", _authPreferences.getToken());
+		Log.d("TAG", _authPreferences.getToken());
 		// Launch the feed activity
 		Intent intent = new Intent( this, FeedActivity.class );
 		startActivity( intent );
@@ -140,7 +137,7 @@ public class AuthActivity extends Activity {
 		taskFetchToken.execute();	
 	}
 	
-	public  class AbstractGetTokenTask extends AsyncTask<Void, Void, Void>{
+	private class AbstractGetTokenTask extends AsyncTask<Void, Void, Void>{
 	    private static final String TAG = "TokenInfoTask";
 	    //private static final String NAME_KEY = "given_name";
 	    protected AuthActivity activity;
@@ -149,15 +146,34 @@ public class AuthActivity extends Activity {
 	    protected String strEmail;
 	    protected int nRequestCode;
 	    protected String strToken;
+	    /** progress dialog to show user that the update is processing. */
+	    private ProgressDialog dialog;
+	    
+	    
 	    
 	    AbstractGetTokenTask( AuthActivity activity, String email, String scope, int requestCode) {
 	        this.activity = activity;
 	        this.strScope = scope;
 	        this.strEmail = email;
 	        this.nRequestCode = requestCode;
+	        this.dialog = new ProgressDialog(activity);
+	        
+	       
 	        //auth = new AuthHelper();
 	    }
 
+	    @Override
+	    protected void onPreExecute() {
+	    	super.onPreExecute();
+	    	
+	    	
+	    	this.dialog.setTitle("Signing in...");
+	    	this.dialog.setMessage("Please wait.");
+	    	this.dialog.setCancelable(false);
+	    	this.dialog.setIndeterminate(true);
+	    	this.dialog.show();
+	    }
+	    
 	    @Override
 	    protected Void doInBackground(Void... params) {
 
@@ -174,12 +190,24 @@ public class AuthActivity extends Activity {
 	    
 	    @Override
 	    public void onPostExecute(Void result) {
+	    	if (this.dialog.isShowing()) {
+	    		this.dialog.dismiss();
+	        }
 	    	if ( strToken != null ) {
 	    		Toast.makeText(getApplicationContext(), "token: " + strToken, Toast.LENGTH_SHORT  ).show();
-	    		Intent intent = new Intent( AuthActivity.this, FeedActivity.class);
-	    		startActivity( intent );
+	    		doCoolAuthenticatedStuff();
 	    		
 	    	}
         }
 	}
+	
+	@Override 
+    protected void onDestroy() {
+    	//if (dialog!=null) {
+    	//	dialog.dismiss();
+			//b.setEnabled(true);
+		//}
+    	super.onDestroy();
+    }
+	
 }

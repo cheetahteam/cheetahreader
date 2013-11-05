@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.auth.AuthPreferences;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,10 +24,10 @@ public class FeedActivity extends Activity {
 	/* Manages API calls to Google App Engine app: Simplecta */
 	private Simplecta 					_simplecta;
 	private FeedManager 				_feedManager;
-	private ProgressBar 				_progressBar;
 	private AuthPreferences 			_authPreferences;
 	private static final String TAG = 	"CC FeedActivity";
 	
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -73,13 +74,31 @@ public class FeedActivity extends Activity {
 	}
 	
 	public void updateFeeds() {
-		AbstractUpdateFeedTask task = new AbstractUpdateFeedTask();
+		AbstractUpdateFeedTask task = new AbstractUpdateFeedTask( this );
 		task.execute();
 	}
 	
 	public  class AbstractUpdateFeedTask extends AsyncTask<Void, Void, Void>{
 	    private static final String TAG = "CC AbstractUpdateFeedTask";
 
+	    /** progress dialog to show user that the update is processing. */
+	    ProgressDialog dialog;
+	    Activity activity;
+	    
+	    
+	    public AbstractUpdateFeedTask(Activity activity) {
+	        this.activity = activity;
+	        this.dialog = new ProgressDialog( activity );
+	    }
+	    
+	    @Override
+	    protected void onPreExecute() {
+	    	this.dialog.setTitle("Downloading Feeds...");
+	    	this.dialog.setMessage("Please wait.");
+	    	this.dialog.setCancelable(false);
+	    	this.dialog.setIndeterminate(true);
+	    	this.dialog.show();
+	    }
 
 	    @Override
 	    protected Void doInBackground(Void... params) {
@@ -103,7 +122,20 @@ public class FeedActivity extends Activity {
 	    
 	    @Override
 	    public void onPostExecute(Void result) {
+	    	if (this.dialog.isShowing()) {
+	    		this.dialog.dismiss();
+	        }
 	    	drawFeeds();
         }
 	}
+	
+	@Override 
+    protected void onDestroy() {
+    	//if (dialog!=null) {
+    	//	dialog.dismiss();
+			//b.setEnabled(true);
+		//}
+    	super.onDestroy();
+    }
+	
 }
