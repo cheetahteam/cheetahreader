@@ -40,6 +40,11 @@ public class Simplecta {
 	DefaultHttpClient http_client;
 	List<org.apache.http.cookie.Cookie> cookies;
 	HttpContext httpContext;
+	
+	/*********************************************************
+	** There is a memory leak error that doesnt crash the app yet, this needs to be closed eventually
+	** Maybe a better method is to create clients locally, and resuse the context*.
+	**************************************************************/
 	AndroidHttpClient client;
 	
 	private Simplecta() {
@@ -84,7 +89,7 @@ public class Simplecta {
 			 */
 			client = AndroidHttpClient.newInstance("IntegrationTestAgent", context );
 			httpContext = AuthenticatedAppEngineContext.newInstance( context, BASE_URL, accessToken);
-			    }
+		}
 		catch(Exception e) {
 			Log.e(TAG, e.getMessage());
 		}
@@ -280,82 +285,8 @@ public class Simplecta {
 		return null;
 	}
 	*/
-
-}
-
-	
-/*
- * stores cookies
- */
-class Cookie{
-	String name = null;
-	String value = null;
-	
-	Cookie(String name, String value){
-		this.name = name;
-		this.value = value;
-	}
-	
-	//Spiting up a cookie string "name=value"
-	Cookie(String cookieString){
-        this.name = cookieString.substring(0, cookieString.indexOf("="));
-        this.value = cookieString.substring(cookieString.indexOf("=") + 1, cookieString.length());
-	}
-	
-	//returns the cookie string
-	String getCookie(){
-		return name+"="+value+"; ";
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public String getValue() {
-		return value;
-	}
-	
-}
-
-/*
- * holds the article info that is parsed for the html
- */
-class ArticleData{
-	
-	private String name;
-	private String url;
-	
-	ArticleData(String articleName, String articleURL){
-		this.setName(articleName);
-		this.setUrl(articleURL);
-	}
-	
-	ArticleData(String htmlBlock){
-		String articleName = null,
-				articleURL = null;
-		
-		//do the parsing
-		
-		
-		
-		this.setName(articleName);
-		this.setUrl(articleURL);
-	}
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void dispose() {
+		client.close();
 	}
 
 }
