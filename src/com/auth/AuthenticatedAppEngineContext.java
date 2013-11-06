@@ -13,15 +13,11 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
-import android.accounts.AccountManagerFuture;
+
 import android.accounts.AccountsException;
-import android.accounts.AuthenticatorException;
-import android.accounts.OperationCanceledException;
+
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
-import android.os.Bundle;
 
 public final class AuthenticatedAppEngineContext implements HttpContext {
   private HttpContext delegate_;
@@ -70,6 +66,7 @@ public final class AuthenticatedAppEngineContext implements HttpContext {
     }
   }
 
+  /*
   private String getAuthenticationToken(Context context)
       throws AccountsException {
     AccountManager accountManager = AccountManager.get(context);
@@ -104,6 +101,7 @@ public final class AuthenticatedAppEngineContext implements HttpContext {
           e);
     }
   }
+  */
 
   private boolean isAuthenticationCookiePresent(CookieStore cookieStore) {
     for (Cookie cookie : cookieStore.getCookies()) {

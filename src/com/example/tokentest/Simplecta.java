@@ -43,7 +43,7 @@ public class Simplecta {
 	
 	/*********************************************************
 	** There is a memory leak error that doesnt crash the app yet, this needs to be closed eventually
-	** Maybe a better method is to create clients locally, and resuse the context*.
+	** Maybe a better method is to create clients locally, and resuse the contextry *.
 	**************************************************************/
 	AndroidHttpClient client;
 	

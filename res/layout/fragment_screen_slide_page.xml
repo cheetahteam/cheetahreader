@@ -1,0 +1,138 @@
+<!--
+  Copyright 2012 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+
+    <!-- Dummy content. -->
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView android:id="@android:id/text1"
+            style="?android:textAppearanceLarge"
+            android:textStyle="bold"
+            android:background="@color/white"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            
+            android:paddingLeft="15dip"
+            android:layout_width="match_parent"
+           
+            android:layout_height="wrap_content"
+            />
+
+        
+       
+        
+         
+         
+         <!-- Page 1 -->
+         
+         
+         <RelativeLayout
+             
+             
+              android:layout_width="match_parent"
+        android:id="@+id/page1"    
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+       
+           
+           <ListView
+               android:layout_width="wrap_content"
+               android:layout_height="700dip"
+              android:background="@drawable/bar2"
+               android:id="@+id/listV"
+               android:layout_marginTop="-15dip"
+               
+               />
+             
+        </RelativeLayout>
+        
+         <!-- Page2 -->
+         
+         <RelativeLayout android:layout_width="match_parent"
+         android:id="@+id/page2"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+        
+              <EditText
+    android:id="@+id/urlName"
+    android:layout_width="400dip"
+    android:layout_height="40dip"
+    android:hint="@string/urlname"
+    android:background="@color/grey"
+    android:layout_marginTop="50dip"
+    android:inputType="textUri" />
+              
+       <Button android:id="@+id/button"
+           android:layout_marginTop="50dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/urlName"
+            
+            android:text="@string/atom" />
+             
+       
+       <EditText
+    android:id="@+id/urlName2"
+    android:layout_width="400dip"
+    android:layout_height="40dip"
+    android:hint="@string/urlname"
+    android:background="@color/grey"
+    android:inputType="textUri" />
+              
+       <Button android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/urlName2"
+            android:text="@string/rss" />
+       
+       
+       
+       <TextView android:id="@android:id/text1"
+            style="?android:textAppearanceLarge"
+           
+            android:textStyle="bold"
+            android:background="@color/white"
+            android:paddingTop="5dip"
+            android:paddingBottom="5dip"
+            android:text="@string/subscribedfeeds"
+            android:paddingLeft="15dip"
+            android:layout_width="match_parent"
+           
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130dip" />
+       
+        <ListView
+               android:layout_width="wrap_content"
+               android:layout_marginTop="170dip"
+               android:layout_height="400dip"
+                 android:background="@drawable/bar2"
+               android:id="@+id/listV1"
+               
+               />
+       
+         </RelativeLayout>
+         
+         
+ 
+     
+    </LinearLayout>
+

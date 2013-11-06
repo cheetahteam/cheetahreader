@@ -19,16 +19,16 @@ public class CheetahMainActivity extends Activity {
 
 	
 	private static final String TAG = "CR CheetahMainActivity";
-	private boolean bCreated;
+	private boolean _bCreated;
 	
-	private ProgressBar _progressBar = null;
+
 	  
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_token);
 		
-		bCreated = true;
+		_bCreated = true;
 		
 		// First try to Login with a Google Account and retrieve the access token
 		Intent intent = new Intent( this, AuthActivity.class );
