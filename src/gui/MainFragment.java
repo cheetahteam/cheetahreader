@@ -38,6 +38,7 @@ import com.auth.AuthPreferences;
 import com.example.tokentest.Article;
 import com.example.tokentest.FeedManager;
 import com.example.tokentest.Simplecta;
+import com.example.tokentest.R;
 
 /**
  * Demonstrates a "screen-slide" animation using a {@link ViewPager}. Because {@link ViewPager}
