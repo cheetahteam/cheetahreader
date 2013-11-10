@@ -1,17 +1,24 @@
 package com.auth;
 
+import java.io.IOException;
+
+import gui.MainFragment;
+
 import com.example.tokentest.FeedActivity;
 import com.example.tokentest.R;
 import com.example.tokentest.Simplecta;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.GooglePlayServicesAvailabilityException;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.auth.UserRecoverableNotifiedException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -85,32 +92,41 @@ public class AuthActivity extends Activity {
 	private void doCoolAuthenticatedStuff() {
 		Log.d("TAG", _authPreferences.getToken());
 		// Launch the feed activity
-		Intent intent = new Intent( this, FeedActivity.class );
+		Intent intent = new Intent( this, MainFragment.class );
 		startActivity( intent );
 	}
 
  
 	/**
 	   * Get a authentication token if one is not available. Throws an exception or non empty string
+	 * @throws IOException 
 	   */
-	  public String fetchToken( Activity activity, String strEmail, String strScope ) {
+	  public String fetchToken( Activity activity, String strEmail, String strScope ) throws IOException {
 	      try {
 	    	   return GoogleAuthUtil.getToken(
 	        		  activity, strEmail, strScope);
-	      } catch (UserRecoverableNotifiedException userRecoverableException) {
-	          // Unable to authenticate, but the user can fix this.
-	          // Forward the user to the appropriate activity.
-	          Log.e( TAG, "Could not fetch token.", null);
-	      } catch (UserRecoverableAuthException userRecoverableException ) {
-	    		  activity.startActivityForResult(userRecoverableException.getIntent(), AUTHORIZATION_CODE );
+	      } 
+	      catch (GooglePlayServicesAvailabilityException playEx) {
+	          Dialog alert = GooglePlayServicesUtil.getErrorDialog(
+	              playEx.getConnectionStatusCode(),
+	              this,
+	              AUTHORIZATION_CODE);
+	          return null;
 	      }
+	      catch (UserRecoverableAuthException userRecoverableException ) {
+	    		  activity.startActivityForResult(userRecoverableException.getIntent(), AUTHORIZATION_CODE );
+	    		  return null;
+	      }
+	      catch (IOException transientEx) {
+	          // network or server error, the call is expected to succeed if you try again later.
+	          // Don't attempt to call again immediately - the request is likely to
+	          // fail, you'll hit quotas or back-off.
+	          throw transientEx;
+	       }
 	      catch (GoogleAuthException fatalException) {
 	    	  Log.e( TAG, "Unrecoverable error " + fatalException.getMessage(), fatalException);
+	    	  return null;
 	      }
-	      catch (Exception e) {
-	    	  Log.e( TAG, e.getMessage() );
-	      }
-	      return null;
 	  }
 	
 	private void initializeFetchButton() {
@@ -177,12 +193,19 @@ public class AuthActivity extends Activity {
 	    @Override
 	    protected Void doInBackground(Void... params) {
 
-	    	strToken = fetchToken( activity, strEmail, strScope );
-	    	Log.d(TAG,  strToken );
-	    	_authPreferences.setToken( strToken );
-	    	Simplecta simplecta = Simplecta.getInstance();
-	    	Log.d(TAG,  "Simplecta initializing" );
-			simplecta.init( activity, strToken );
+	    	try {
+				strToken = fetchToken( activity, strEmail, strScope );
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	if ( strToken != null ) {
+	    		Log.d(TAG,  strToken );
+		    	_authPreferences.setToken( strToken );
+		    	Simplecta simplecta = Simplecta.getInstance();
+		    	Log.d(TAG,  "Simplecta initializing" );
+				simplecta.init( activity, strToken );
+	    	}
 			
 			
 	    	return null;
