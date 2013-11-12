@@ -58,5 +58,10 @@ public class Article {
 		
 		return false;
 	}
+	
+	@Override 
+	public String toString( ) {
+		return this._strTitle;
+	}
 
 }
