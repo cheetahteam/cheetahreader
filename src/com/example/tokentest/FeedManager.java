@@ -48,22 +48,22 @@ public class FeedManager {
 
 	public Feed getFeed( String strFeedKey ) {
 		int index = findFeed( strFeedKey );
-		if ( index < 0 || index > _feeds.size()-1 )
-			return null;
+		if ( index < 0 || index > _feeds.size() )
+			throw new ArrayIndexOutOfBoundsException( "Feed not found:" + strFeedKey );
 		else
 			return _feeds.get( index );
 	}
 	public Article getArticle( String strArticleKey ) {
 		int index = findArticle( strArticleKey );
 		if ( index < 0 || index > _alArticles.size() )
-			throw new IllegalArgumentException( "Article not found" + strArticleKey );
+			throw new ArrayIndexOutOfBoundsException( "Article not found:" + strArticleKey );
 		else
 			return _alArticles.get( index );
 	}
 	
 	public Article getArticle( int nIndex ) {
 		if ( nIndex < 0 || nIndex > _alArticles.size() ) {
-			throw new IllegalArgumentException( "The article index is out of bounds." + nIndex );
+			throw new ArrayIndexOutOfBoundsException( "The article index is out of bounds:" + nIndex );
 		}
 		Article article = _alArticles.get( nIndex );
 		return article;
@@ -126,8 +126,7 @@ public class FeedManager {
 			
 		} catch (Exception ex) {
 			// TODO Auto-generated catch block
-			Log.e( TAG, "Unable to get JSOUP Document from Stream." );
-			throw ex;
+			throw new RuntimeException("Unable to parse html using JSoup:" + strHTML );
 		}
 		return doc;
 	}
@@ -183,6 +182,9 @@ public class FeedManager {
 		{
 			throw new NullPointerException("Document is null. Unable to Parse html.");
 		}
+		
+		/***** TODO: change this from a iterator to a loop to increase speed *****/
+		
 		// The data starts after the <body> of the html
 		Element content = doc.body();
 		Elements items = content.getElementsByClass("item");
@@ -218,20 +220,20 @@ public class FeedManager {
 		
 	}
 	
-	private int findArticle( Article article ) {
+	public int findArticle( Article article ) {
 		
 		return _alArticles.indexOf( article );
 	}
-	private int findArticle( String strArticleKey ) {
+	public int findArticle( String strArticleKey ) {
 		Article article = new Article();
 		article.setKey( strArticleKey );
 		return _alArticles.indexOf( article );
 	}
-	private int findFeed( Feed feed ) {
+	public int findFeed( Feed feed ) {
 		
 		return _feeds.indexOf( feed );
 	}
-	private int findFeed( String strFeedKey ) {
+	public int findFeed( String strFeedKey ) {
 		Feed feed = new Feed();
 		feed.setFeedKey( strFeedKey );
 		return _feeds.indexOf( feed );
