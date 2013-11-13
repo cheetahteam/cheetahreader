@@ -15,6 +15,8 @@
  */
 package gui;
 
+import java.util.ArrayList;
+
 import android.app.Fragment;
 
 import android.content.Context;
@@ -30,6 +32,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.tokentest.Article;
+import com.example.tokentest.FeedManager;
 import com.example.tokentest.R;
 
 /**
@@ -48,6 +53,8 @@ public class ScreenSlidePageFragment extends Fragment {
 	 RelativeLayout pg1,pg2;
 	 Context con;
 	 
+	 FeedManager _feedManager;
+	 ArrayList<Article> _articles;
 	 
     /**
      * The argument key for the page number this fragment represents.
@@ -80,7 +87,7 @@ public class ScreenSlidePageFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mPageNumber = getArguments().getInt(ARG_PAGE);
        
-        
+        _feedManager = FeedManager.getInstance();
     }
 
     @Override
@@ -89,19 +96,11 @@ public class ScreenSlidePageFragment extends Fragment {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_screen_slide_page, container, false);
-
-        
-        
-        Model.LoadModel();
+    
     listView = (ListView) rootView.findViewById(R.id.listV);
     listView1 = (ListView) rootView.findViewById(R.id.listV1);
-    String[] ids = new String[Model.Items.size()];
-    for (int i= 0; i < ids.length; i++){
-
-        ids[i] = Integer.toString(i+1);
-    }
     
-    ItemAdapter adapter = new ItemAdapter(this.getActivity(),R.layout.row, ids);
+    AdapterArticle adapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
     
     
    listView.setAdapter(adapter);

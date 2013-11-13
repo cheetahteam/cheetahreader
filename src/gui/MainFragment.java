@@ -234,7 +234,7 @@ public class MainFragment extends FragmentActivity {
 	    	if (this.dialog.isShowing()) {
 	    		this.dialog.dismiss();
 	        }
-	    	drawFeeds();
+	    	//drawFeeds();
         }
 	}
 	
