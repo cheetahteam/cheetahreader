@@ -20,13 +20,17 @@ import java.util.ArrayList;
 import android.app.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.EditText;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 //modified
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -55,6 +59,10 @@ public class ScreenSlidePageFragment extends Fragment {
 	 
 	 FeedManager _feedManager;
 	 ArrayList<Article> _articles;
+	 
+	// web view
+	 private WebView _webView;
+		 
 	 
     /**
      * The argument key for the page number this fragment represents.
@@ -88,6 +96,7 @@ public class ScreenSlidePageFragment extends Fragment {
         mPageNumber = getArguments().getInt(ARG_PAGE);
        
         _feedManager = FeedManager.getInstance();
+    
     }
 
     @Override
@@ -103,12 +112,30 @@ public class ScreenSlidePageFragment extends Fragment {
     AdapterArticle adapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
     
     
-   listView.setAdapter(adapter);
+   listView.setAdapter(adapter );
    listView1.setAdapter(adapter);
         
         
-        // Set the title view to show the page number.
-        // modified by Solina Nuon
+   listView.setOnItemClickListener(new OnItemClickListener() {
+	   
+		private Context context = ApplicationContextProvider.getContext();
+
+		//context = this.context;
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+				    // getting article
+				//	String product = ((TextView) view).getText().toString();
+		         Article article = new Article();
+				// article =  (Article) parent.getAdapter().getItem(position);
+			     article = (Article) listView.getItemAtPosition(position);
+			    String url = article.getFeedLink();
+			    Intent intent = new Intent(this.context, WebViewActivity.class);
+			    intent.putExtra("URL", url);
+			    
+			    startActivity(intent);
+				}
+   });
+
         
       // view = (TextView) rootView.findViewById(R.id.textshow);
       // view1 = (TextView) rootView.findViewById(R.id.textshow1);
