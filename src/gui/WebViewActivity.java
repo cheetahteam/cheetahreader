@@ -2,6 +2,7 @@ package gui;
 import com.example.tokentest.R;
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
  
 public class WebViewActivity extends Activity {
@@ -13,7 +14,9 @@ public class WebViewActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.webview);
 		// Getting the URL from the Onclick Article Class
-		String url = (String) getIntent().getSerializableExtra("Artic");
+		String url = (String) getIntent().getSerializableExtra("URL");
+		Log.d("web view shit", "url:"+url);
+		
 		webView = (WebView) findViewById(R.id.webView1);
 		webView.getSettings().setJavaScriptEnabled(true);
 		// loading the URL and display the webpage

@@ -22,6 +22,7 @@ public class FeedManager {
 	private ArrayList<Feed> 				_feeds;
 	private final static int NOT_FOUND = 	-1;
 	private static FeedManager instance = 	null;
+	public boolean isUpdated = false;
 	
 	private FeedManager() {
 		
@@ -89,6 +90,7 @@ public class FeedManager {
 			return;
 		}
     	fillFeeds();
+    	isUpdated = true;
 	}
 
 	/*

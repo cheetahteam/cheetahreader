@@ -85,6 +85,14 @@
             android:name="com.example.tokentest.FeedActivity"
             android:label="@string/title_activity_feed" >
         </activity>
+        <activity
+            android:name="gui.WebViewActivity"
+            android:label="@string/title_activity_feed" >
+        </activity>
+        <activity
+            android:name="gui.test.ArticleListActivity"
+            android:label="@string/title_activity_feed" >
+        </activity>
     </application>
 
 </manifest>

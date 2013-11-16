@@ -3,6 +3,7 @@ package com.auth;
 import java.io.IOException;
 
 import gui.MainFragment;
+import gui.test.ArticleListActivity;
 
 import com.example.tokentest.FeedActivity;
 import com.example.tokentest.R;
@@ -93,6 +94,7 @@ public class AuthActivity extends Activity {
 		Log.d("TAG", _authPreferences.getToken());
 		// Launch the feed activity
 		Intent intent = new Intent( this, MainFragment.class );
+		//Intent intent = new Intent( this, ArticleListActivity.class );
 		startActivity( intent );
 	}
 

@@ -31,7 +31,7 @@ public class FeedActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_feed);
+		setContentView(R.id.listV1);
 		
 		_feedManager = FeedManager.getInstance();
 		_authPreferences = new AuthPreferences(this);

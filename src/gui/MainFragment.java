@@ -78,7 +78,11 @@ public class MainFragment extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_screen_slide);
-
+        
+        _feedManager = FeedManager.getInstance();
+		_authPreferences = new AuthPreferences(this);
+		_simplecta = Simplecta.getInstance();
+        
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
@@ -96,14 +100,10 @@ public class MainFragment extends FragmentActivity {
             }
         });
         
-        _feedManager = FeedManager.getInstance();
-		_authPreferences = new AuthPreferences(this);
-		_simplecta = Simplecta.getInstance();
+        
 		
 		//initiliazeUpdateFeedsBtn();
 		
-		// Run the first update
-		updateFeeds();
         
     }
 
@@ -182,60 +182,5 @@ public class MainFragment extends FragmentActivity {
 		
 	}
 	
-	public void updateFeeds() {
-		AbstractUpdateFeedTask task = new AbstractUpdateFeedTask( this );
-		task.execute();
-	}
-	
-	public  class AbstractUpdateFeedTask extends AsyncTask<Void, Void, Void>{
-	    private static final String TAG = "CC AbstractUpdateFeedTask";
-
-	    /** progress dialog to show user that the update is processing. */
-	    ProgressDialog dialog;
-	    Activity activity;
-	    
-	    
-	    public AbstractUpdateFeedTask(Activity activity) {
-	        this.activity = activity;
-	        this.dialog = new ProgressDialog( activity );
-	    }
-	    
-	    @Override
-	    protected void onPreExecute() {
-	    	this.dialog.setTitle("Downloading Feeds...");
-	    	this.dialog.setMessage("Please wait.");
-	    	this.dialog.setCancelable(false);
-	    	this.dialog.setIndeterminate(true);
-	    	this.dialog.show();
-	    }
-
-	    @Override
-	    protected Void doInBackground(Void... params) {
-
-	    	
-	    	//InputStream is = simplecta.getHTMLStream();
-	    	String strArticlesHTML = null;
-	    	try {
-	    		// Get the HTML String from the Simplecta connection
-	    		strArticlesHTML = _simplecta.showAll();
-	    		// Parse the html into the article/feed objects
-				_feedManager.updateFeeds( strArticlesHTML );
-	    		//_feedManager.updateFeeds( _simplecta.getAllURL() );
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				Log.e( TAG, e.getMessage() );
-			}
-			return null;
-
-	    }
-	    
-	    @Override
-	    public void onPostExecute(Void result) {
-	    	if (this.dialog.isShowing()) {
-	    		this.dialog.dismiss();
-	        }
-	    	//drawFeeds();
-        }
-	}
 	
 }
