@@ -223,18 +223,18 @@ public class ScreenSlidePageFragment extends Fragment {
 		
 		
 		public AbstractUpdateFeedTask(){//(Activity activity) {
-		 this.activity = getActivity();
-		 this.dialog = new ProgressDialog( activity );
+		//this.activity = activity;
+		//this.dialog = new ProgressDialog( activity );
 		}
 		
 		@Override
 		protected void onPreExecute() {
-			
+			/*
 		this.dialog.setTitle("Downloading Feeds...");
 		this.dialog.setMessage("Please wait.");
 		this.dialog.setCancelable(false);
 		this.dialog.setIndeterminate(true);
-		this.dialog.show();
+		this.dialog.show();*/
 		}
 		
 		@Override
@@ -259,9 +259,9 @@ public class ScreenSlidePageFragment extends Fragment {
 		
 		@Override
 		public void onPostExecute(Void result) {
-			if (this.dialog.isShowing()) {
+			/*if (this.dialog.isShowing()) {
 				this.dialog.dismiss();
-			}
+			}*/
         }
 	}
 }
