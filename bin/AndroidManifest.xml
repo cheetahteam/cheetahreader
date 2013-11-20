@@ -90,7 +90,7 @@
             android:label="@string/title_activity_feed" >
         </activity>
         <activity
-            android:name="gui.test.ArticleListActivity"
+            android:name="gui.FeedArticleActivity"
             android:label="@string/title_activity_feed" >
         </activity>
     </application>

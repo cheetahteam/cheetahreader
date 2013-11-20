@@ -3,7 +3,6 @@ package com.auth;
 import java.io.IOException;
 
 import gui.MainFragment;
-import gui.test.ArticleListActivity;
 
 import com.example.tokentest.FeedActivity;
 import com.example.tokentest.R;

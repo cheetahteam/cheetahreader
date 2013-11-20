@@ -44,7 +44,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.tokentest.ActionManager;
 import com.example.tokentest.Article;
+import com.example.tokentest.Feed;
 import com.example.tokentest.FeedManager;
 import com.example.tokentest.R;
 import com.example.tokentest.Simplecta;
@@ -58,16 +60,14 @@ import com.example.tokentest.Simplecta;
  */
 public class ScreenSlidePageFragment extends Fragment {
 	// modified spot
-	Simplecta _simplecta;
 	TextView view ;
 	TextView view1 ;
 	EditText te;
 	ListView listView,listView1;
 	RelativeLayout pg1,pg2;
 	
-	AdapterArticle adapter;
-	
 	FeedManager _feedManager;
+	ActionManager _actionManager;
 	ArrayList<Article> _articles;
 	 
 	
@@ -82,7 +82,8 @@ public class ScreenSlidePageFragment extends Fragment {
 		public void run() {
 			if( _feedManager.isUpdated == true){
 				_feedManager.isUpdated = false;
-				adapter.notifyDataSetChanged();
+				_feedManager.articleAdapter.notifyDataSetChanged();
+				_feedManager.feedAdapter.notifyDataSetChanged();
 				
 			}
 			
@@ -121,8 +122,8 @@ public class ScreenSlidePageFragment extends Fragment {
 	 }
 	
 	public ScreenSlidePageFragment() {
-		_simplecta = Simplecta.getInstance();
-		updateFeeds();
+		_actionManager = ActionManager.getInstance();
+		_actionManager.updateNow();
 		handeler.postDelayed(dataUpdateChecker, 0);
 	}
 	
@@ -147,10 +148,12 @@ public class ScreenSlidePageFragment extends Fragment {
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
 		listView = (ListView) rootView.findViewById(R.id.listV);
 		listView1 = (ListView) rootView.findViewById(R.id.listV1);
-		adapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
-		
-		listView.setAdapter(adapter );
-		listView1.setAdapter(adapter);
+		_feedManager.articleAdapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
+		_feedManager.feedAdapter = new AdapterFeed(this.getActivity(), R.layout.row, _feedManager);
+		//articles
+		listView.setAdapter(_feedManager.articleAdapter );
+		//feeds
+		listView1.setAdapter(_feedManager.feedAdapter);
         
 		listView.setOnItemClickListener(new OnItemClickListener() {
 	   
@@ -169,6 +172,28 @@ public class ScreenSlidePageFragment extends Fragment {
 				String url = article.getPeekLink();
 				Intent intent = new Intent(getActivity(), WebViewActivity.class);
 				intent.putExtra("URL", url);
+				
+				startActivity(intent);
+			}
+		});
+		
+		listView1.setOnItemClickListener(new OnItemClickListener() {
+			   
+			private Context context = ApplicationContextProvider.getContext();
+	
+			//context = this.context;
+			public void onItemClick(AdapterView<?> parent, View view,int position, long id) {
+				// getting article
+				//	String product = ((TextView) view).getText().toString();
+				Feed feed = new Feed();
+				// article =  (Article) parent.getAdapter().getItem(position);
+				Log.d("new shit", "id:"+id);
+				Log.d("new shit", "position:"+position);
+				feed = _feedManager.getFeed((int)id);
+				String feedUrl = feed.getFeedLink();
+				
+				Intent intent = new Intent(getActivity(),FeedArticleActivity.class);
+				intent.putExtra("feedUrl", feedUrl);
 				
 				startActivity(intent);
 			}
@@ -207,61 +232,5 @@ public class ScreenSlidePageFragment extends Fragment {
 	 */
 	public int getPageNumber() {
 	    return mPageNumber;
-	}
-	
-	public void updateFeeds() {
-		AbstractUpdateFeedTask task = new AbstractUpdateFeedTask();
-		task.execute();
-	}
-	
-	public  class AbstractUpdateFeedTask extends AsyncTask<Void, Void, Void>{
-	    private static final String TAG = "CC AbstractUpdateFeedTask";
-	
-		/** progress dialog to show user that the update is processing. */
-		ProgressDialog dialog;
-		Activity activity;
-		
-		
-		public AbstractUpdateFeedTask(){//(Activity activity) {
-		//this.activity = activity;
-		//this.dialog = new ProgressDialog( activity );
-		}
-		
-		@Override
-		protected void onPreExecute() {
-			/*
-		this.dialog.setTitle("Downloading Feeds...");
-		this.dialog.setMessage("Please wait.");
-		this.dialog.setCancelable(false);
-		this.dialog.setIndeterminate(true);
-		this.dialog.show();*/
-		}
-		
-		@Override
-		protected Void doInBackground(Void... params) {
-		
-			
-			//InputStream is = simplecta.getHTMLStream();
-		String strArticlesHTML = null;
-		try {
-			// Get the HTML String from the Simplecta connection
-		strArticlesHTML = _simplecta.showAll();
-		// Parse the html into the article/feed objects
-		_feedManager.updateFeeds( strArticlesHTML );
-		//_feedManager.updateFeeds( _simplecta.getAllURL() );
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-				Log.e( TAG, e.getMessage() );
-			}
-			return null;
-		
-		}
-		
-		@Override
-		public void onPostExecute(Void result) {
-			/*if (this.dialog.isShowing()) {
-				this.dialog.dismiss();
-			}*/
-        }
 	}
 }

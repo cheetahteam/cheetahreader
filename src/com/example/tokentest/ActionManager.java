@@ -5,18 +5,31 @@ import java.util.Queue;
 
 import android.os.AsyncTask;
 
+/*
+ * only Action manager should be interacting with Simplecta
+ */
 public class ActionManager extends AsyncTask<Void, Void, Void>{
 	private Simplecta simplecta;
 	private Queue<Action> queue;
-	private String page;
+	private FeedManager feedManager;
 	
-	private boolean isNewPage;
+	private static ActionManager instance = null;
 	
-	ActionManager(){
-		this.queue = new LinkedList<Action>();
-		simplecta = Simplecta.getInstance();
+	public static ActionManager getInstance(){
+		if(instance == null){
+			instance = new ActionManager();
+		}
+		return instance;
 	}
 	
+	private ActionManager(){
+		this.queue = new LinkedList<Action>();
+		simplecta = Simplecta.getInstance();
+		feedManager = FeedManager.getInstance();
+	}
+	
+	
+	//updates screen imediatly
 	public boolean updateNow(){
 		queue.add(new Action(Action.ACTION.UPDATE, null));
 		return this.executeQueue();
@@ -38,15 +51,6 @@ public class ActionManager extends AsyncTask<Void, Void, Void>{
 		queue.remove(action);
 	}
 	
-	//sees if a updated page is available
-	public boolean isNewPageAvailable(){
-		return this.isNewPage;
-	}
-	
-	public String getPage(){
-		return this.page;
-	}
-	
 	//calls the apropriate functions in simplecta
 	private boolean runAction(Action action){
 		switch(action.type){
@@ -61,13 +65,13 @@ public class ActionManager extends AsyncTask<Void, Void, Void>{
 			case UNSUBSCRIBE:
 				return this.simplecta.unsubscribe(action.data);
 			case UPDATE:
-				this.page = this.simplecta.getAllURL();
-				if(page.isEmpty())
+				try {
+					this.feedManager.updateFeeds(this.simplecta.getAllURL());
+				} catch (Exception e) {
+					e.printStackTrace();
 					return false;
-				else {
-					this.isNewPage = true;
-					return true;
 				}
+				return true;
 				
 		}
 		
@@ -92,7 +96,9 @@ public class ActionManager extends AsyncTask<Void, Void, Void>{
 	@Override
 	protected Void doInBackground(Void... params) {
 		// TODO sleep for 20 seconds
-		this.executeQueue();
-		return null;
+		while(true){
+			this.executeQueue();
+			
+		}
 	}
 }

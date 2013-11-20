@@ -1,6 +1,8 @@
 package com.example.tokentest;
 
-import java.io.IOException;
+import gui.AdapterArticle;
+import gui.AdapterFeed;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,21 +13,25 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
 
 public class FeedManager {
 	
-	private static String TAG = 			"CC FeedManager";
-	private ArrayList<Article> 				_alArticles;
-	private ArrayList<Feed> 				_feeds;
+	private static String TAG = "CC FeedManager";
+	private ArrayList<Article> _alArticles;
+	private ArrayList<Feed> _feeds;
 	private final static int NOT_FOUND = 	-1;
 	private static FeedManager instance = 	null;
 	public boolean isUpdated = false;
 	
+	public ArrayList<Article> feedArticles;
+	public AdapterFeed feedAdapter;
+	public AdapterArticle articleAdapter;
+	public AdapterArticle feedArticleAdapter;
+	
+	
 	private FeedManager() {
-		
 		_alArticles = new ArrayList<Article>();
 		_feeds = new ArrayList<Feed>();
 
@@ -45,6 +51,10 @@ public class FeedManager {
 	}
 	public ArrayList<Feed>  getFeeds() {
 		return _feeds;
+	}
+	
+	public Feed  getFeed( int index) {
+		return _feeds.get(index);
 	}
 
 	public Feed getFeed( String strFeedKey ) {
@@ -83,14 +93,35 @@ public class FeedManager {
 
 		try {
 			 doc = getDocument( strHTML );
-			 fillArticles( doc );
+			 _alArticles = extractArticles( doc );
 		}
 		catch( Exception ex ) {
 			Log.e(TAG, ex.getMessage());
 			return;
 		}
-    	fillFeeds();
     	isUpdated = true;
+	}
+	
+public ArrayList<Article> getAtricleList( String strHTML ) throws Exception {
+		
+		Document doc = null;
+		if ( strHTML == null ) {
+			Log.e( TAG, "The HTML string is null. cannot parse" );
+			return null;
+		}
+		if ( strHTML == "" ) {
+			Log.e( TAG, "The HTML string is empty. cannot parse" );
+			return null;
+		}
+
+		try {
+			 doc = getDocument( strHTML );
+			 return extractArticles( doc );
+		}
+		catch( Exception ex ) {
+			Log.e(TAG, ex.getMessage());
+			return null;
+		}
 	}
 
 	/*
@@ -178,7 +209,7 @@ public class FeedManager {
 		return key;
 		
 	}
-	private void fillArticles( Document doc ) {
+	private ArrayList<Article> extractArticles( Document doc ) {
 
 		if ( doc == null )
 		{
@@ -190,7 +221,7 @@ public class FeedManager {
 		// The data starts after the <body> of the html
 		Element content = doc.body();
 		Elements items = content.getElementsByClass("item");
-		
+		ArrayList<Article> temArticles = new ArrayList<Article>();
 		// Parse and Add every article item to _articles
 		for (Element item : items) {
 			
@@ -213,12 +244,11 @@ public class FeedManager {
 		  // TODO Validate article
 		  
 		  Article article = new Article( feedTitle, feedLinkHref, articleKey, readLinkHref, articleTitle, peekLinkHref, strDataKey );
-		  _alArticles.add( article );
+		  temArticles.add( article );
 		  
 		}
 		
-		// Add the corresponding articles to  feeds
-		fillFeeds();
+		return temArticles;
 		
 	}
 	

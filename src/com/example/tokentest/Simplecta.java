@@ -247,46 +247,54 @@ public class Simplecta {
 	
 	/*
 	 * see all the subscriptions
+	 */
 	 
-	ArrayList<Feed> feeds(){
+	public String feeds(){
+		HttpResponse result = null;
+		StringBuilder whole = new StringBuilder();
 		try {
-			HttpURLConnection connection = prepConnection("/feed/");
-			
-			//if connection returned some kind of error
-			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK){
-				return null;
-			}
-			
-			//reader to read in html code line by line
-			BufferedReader reader  = new BufferedReader(
-					new InputStreamReader(connection.getInputStream()));
-			
-			//holds the list of feed
-			ArrayList<Feed> feed = new ArrayList<Feed>();
-			
-			String line = null;
-			String block = "";
-			while ((line = reader.readLine()) != null) {
-				//save the feed
-	            System.out.println(line);
-	            if(line.contains("item")){
-	            	//i//f(!block.isEmpty()){
-	            		//feed.add(new Feed(block));
-	            		//block = "";
-	            	//}
-	            	block = block+line;
-	            }
-	        }
-			return feed;
-			
-		} catch (Exception e) {
-			e.printStackTrace();
+			result = prepConnection("/feed/");
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(result.getEntity().getContent()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                whole.append(inputLine);
+                Log.d(TAG, inputLine);
+            }
+            in.close();
+        } 
+		catch (Exception e) {
+            Log.e(TAG, e.getMessage());
 		}
-		return null;
+		
+		return whole.toString();
 	}
-	*/
+	
 	public void dispose() {
 		client.close();
+	}
+
+	
+	//not done yet
+	public String getArticleByFeed(String feedUrl) {
+		HttpResponse result = null;
+		StringBuilder whole = new StringBuilder();
+		try {
+			result = prepConnection("/feed/"+feedUrl);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(result.getEntity().getContent()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                whole.append(inputLine);
+                Log.d(TAG, inputLine);
+            }
+            in.close();
+        } 
+		catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+		}
+		
+		return whole.toString();
 	}
 
 }
