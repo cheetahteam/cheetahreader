@@ -79,16 +79,16 @@ public class FeedManager {
 		Article article = _alArticles.get( nIndex );
 		return article;
 	}
-	public void updateFeeds( String strHTML ) throws Exception {
+	public boolean updateFeeds( String strHTML ) throws Exception {
 		
 		Document doc = null;
 		if ( strHTML == null ) {
 			Log.e( TAG, "The HTML string is null. cannot parse" );
-			return;
+			return false;
 		}
 		if ( strHTML == "" ) {
 			Log.e( TAG, "The HTML string is empty. cannot parse" );
-			return;
+			return false;
 		}
 
 		try {
@@ -97,9 +97,34 @@ public class FeedManager {
 		}
 		catch( Exception ex ) {
 			Log.e(TAG, ex.getMessage());
-			return;
+			return false;
 		}
     	isUpdated = true;
+    	return true;
+	}
+	
+	public boolean setArtilceFeeds( String strHTML ) throws Exception {
+		
+		Document doc = null;
+		if ( strHTML == null ) {
+			Log.e( TAG, "The HTML string is null. cannot parse" );
+			return false;
+		}
+		if ( strHTML == "" ) {
+			Log.e( TAG, "The HTML string is empty. cannot parse" );
+			return false;
+		}
+
+		try {
+			 doc = getDocument( strHTML );
+			 this.feedArticles = extractArticles( doc );
+		}
+		catch( Exception ex ) {
+			Log.e(TAG, ex.getMessage());
+			return false;
+		}
+    	isUpdated = true;
+    	return true;
 	}
 	
 public ArrayList<Article> getAtricleList( String strHTML ) throws Exception {

@@ -274,8 +274,7 @@ public class Simplecta {
 		client.close();
 	}
 
-	
-	//not done yet
+	//gets all the articles based on feed
 	public String getArticleByFeed(String feedUrl) {
 		HttpResponse result = null;
 		StringBuilder whole = new StringBuilder();
@@ -293,6 +292,7 @@ public class Simplecta {
 		catch (Exception e) {
             Log.e(TAG, e.getMessage());
 		}
+		
 		
 		return whole.toString();
 	}

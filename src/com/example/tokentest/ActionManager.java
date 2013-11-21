@@ -43,7 +43,7 @@ public class ActionManager extends AsyncTask<Void, Void, Void>{
 	
 	public void addAction(Action.ACTION type, String data){
 		queue.add(new Action(type, data));
-}
+	}
 	
 	
 	//removes a action from the queue
@@ -66,14 +66,13 @@ public class ActionManager extends AsyncTask<Void, Void, Void>{
 				return this.simplecta.unsubscribe(action.data);
 			case UPDATE:
 				try {
-					this.feedManager.updateFeeds(this.simplecta.getAllURL());
+					return this.feedManager.updateFeeds(this.simplecta.getAllURL());
 				} catch (Exception e) {
 					e.printStackTrace();
 					return false;
 				}
-				return true;
-				
-		}
+					
+			}
 		
 		return false;
 		

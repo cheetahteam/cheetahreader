@@ -293,19 +293,20 @@ containing a value of this type.
         public static final int activity_layout_changes=0x7f030004;
         public static final int activity_main=0x7f030005;
         public static final int activity_screen_slide=0x7f030006;
-        public static final int activity_token=0x7f030007;
-        public static final int activity_update=0x7f030008;
-        public static final int activity_zoom=0x7f030009;
-        public static final int excerpt_content=0x7f03000a;
-        public static final int fragment_card_back=0x7f03000b;
-        public static final int fragment_card_front=0x7f03000c;
-        public static final int fragment_screen_slide_page=0x7f03000d;
-        public static final int list_item_example=0x7f03000e;
-        public static final int list_row_item=0x7f03000f;
-        public static final int list_view_activity=0x7f030010;
-        public static final int mainpage=0x7f030011;
-        public static final int row=0x7f030012;
-        public static final int webview=0x7f030013;
+        public static final int activity_settings=0x7f030007;
+        public static final int activity_token=0x7f030008;
+        public static final int activity_update=0x7f030009;
+        public static final int activity_zoom=0x7f03000a;
+        public static final int excerpt_content=0x7f03000b;
+        public static final int fragment_card_back=0x7f03000c;
+        public static final int fragment_card_front=0x7f03000d;
+        public static final int fragment_screen_slide_page=0x7f03000e;
+        public static final int list_item_example=0x7f03000f;
+        public static final int list_row_item=0x7f030010;
+        public static final int list_view_activity=0x7f030011;
+        public static final int mainpage=0x7f030012;
+        public static final int row=0x7f030013;
+        public static final int webview=0x7f030014;
     }
     public static final class menu {
         public static final int activity_crossfade=0x7f0b0000;
