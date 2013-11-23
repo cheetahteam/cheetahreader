@@ -12,7 +12,7 @@ public class ActionManager{
 	private Simplecta simplecta;
 	private Queue<Action> queue;
 	private FeedManager feedManager;
-	private boolean updateNow = false;
+	public boolean dataUpdated = false;
 	private boolean queueExecuting = false;
 	
 	private static ActionManager instance = null;
@@ -34,7 +34,6 @@ public class ActionManager{
 	//updates screen imediatly
 	public void updateNow(){
 		queue.add(new Action(Action.ACTION.UPDATE, null));
-		updateNow = true;
 		execute();
 	}
 	
@@ -75,7 +74,8 @@ public class ActionManager{
 					return false;
 				}
 					
-			}
+		}
+		
 		
 		return false;
 		
@@ -100,6 +100,7 @@ public class ActionManager{
 			}
 		}
 		queueExecuting = false;
+		dataUpdated = true;
 		return true;
 	}
 	

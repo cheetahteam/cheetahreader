@@ -80,8 +80,10 @@ public class ScreenSlidePageFragment extends Fragment {
 	
 		@Override
 		public void run() {
-			if( _feedManager.isUpdated == true){
-				_feedManager.isUpdated = false;
+			if(_actionManager.dataUpdated == true){
+				Log.d("shit", "data update checker");
+				
+				_actionManager.dataUpdated = false;
 				_feedManager.articleAdapter.notifyDataSetChanged();
 				_feedManager.feedAdapter.notifyDataSetChanged();
 				
@@ -122,6 +124,7 @@ public class ScreenSlidePageFragment extends Fragment {
 	 }
 	
 	public ScreenSlidePageFragment() {
+		handeler.postDelayed(dataUpdateChecker, 0);
 	}
 	
 	@Override
@@ -137,12 +140,12 @@ public class ScreenSlidePageFragment extends Fragment {
 	   
 	    _feedManager = FeedManager.getInstance();
 	    _actionManager = ActionManager.getInstance();
-	    
-		_feedManager.articleAdapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
-		_feedManager.feedAdapter = new AdapterFeed(this.getActivity(), R.layout.row, _feedManager);
-		
+	    if(mPageNumber==0){
+	    	_feedManager.articleAdapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
+	    } else if(mPageNumber==1){
+	    	_feedManager.feedAdapter = new AdapterFeed(this.getActivity(), R.layout.row, _feedManager);
+	    }
 		_actionManager.updateNow();
-		handeler.postDelayed(dataUpdateChecker, 0);
 	
 	}
 	
@@ -154,8 +157,9 @@ public class ScreenSlidePageFragment extends Fragment {
 		listView1 = (ListView) rootView.findViewById(R.id.listV1);
 		//articles
 		listView.setAdapter(_feedManager.articleAdapter );
-		//feeds
-		listView1.setAdapter(_feedManager.articleAdapter);
+		//feeds 
+		//add this back when parsing feed works
+		//listView1.setAdapter(_feedManager.articleAdapter);
         
 		listView.setOnItemClickListener(new OnItemClickListener() {
 	   
@@ -189,8 +193,6 @@ public class ScreenSlidePageFragment extends Fragment {
 				//	String product = ((TextView) view).getText().toString();
 				Feed feed = new Feed();
 				// article =  (Article) parent.getAdapter().getItem(position);
-				Log.d("new shit", "id:"+id);
-				Log.d("new shit", "position:"+position);
 				feed = _feedManager.getFeed((int)id);
 				String feedUrl = feed.getFeedLink();
 				
