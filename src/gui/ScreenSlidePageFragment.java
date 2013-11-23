@@ -122,9 +122,6 @@ public class ScreenSlidePageFragment extends Fragment {
 	 }
 	
 	public ScreenSlidePageFragment() {
-		_actionManager = ActionManager.getInstance();
-		_actionManager.updateNow();
-		handeler.postDelayed(dataUpdateChecker, 0);
 	}
 	
 	@Override
@@ -139,6 +136,13 @@ public class ScreenSlidePageFragment extends Fragment {
 	    mPageNumber = getArguments().getInt(ARG_PAGE);
 	   
 	    _feedManager = FeedManager.getInstance();
+	    _actionManager = ActionManager.getInstance();
+	    
+		_feedManager.articleAdapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
+		_feedManager.feedAdapter = new AdapterFeed(this.getActivity(), R.layout.row, _feedManager);
+		
+		_actionManager.updateNow();
+		handeler.postDelayed(dataUpdateChecker, 0);
 	
 	}
 	
@@ -148,12 +152,10 @@ public class ScreenSlidePageFragment extends Fragment {
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
 		listView = (ListView) rootView.findViewById(R.id.listV);
 		listView1 = (ListView) rootView.findViewById(R.id.listV1);
-		_feedManager.articleAdapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
-		_feedManager.feedAdapter = new AdapterFeed(this.getActivity(), R.layout.row, _feedManager);
 		//articles
 		listView.setAdapter(_feedManager.articleAdapter );
 		//feeds
-		listView1.setAdapter(_feedManager.feedAdapter);
+		listView1.setAdapter(_feedManager.articleAdapter);
         
 		listView.setOnItemClickListener(new OnItemClickListener() {
 	   
