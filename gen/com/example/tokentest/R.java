@@ -256,9 +256,18 @@ containing a value of this type.
         public static final int updatf2=0x7f020047;
     }
     public static final class id {
+<<<<<<< HEAD
         public static final int accounts_tester_account_types_spinner=0x7f060009;
         public static final int accounts_tester_account_types_spinner_label=0x7f060008;
         public static final int action_add_item=0x7f06002b;
+=======
+        public static final int accounts_tester_account_types_spinner=0x7f060008;
+        public static final int accounts_tester_account_types_spinner_label=0x7f060007;
+        public static final int action_add_item=0x7f060026;
+<<<<<<< HEAD
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
+=======
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
         public static final int action_flip=0x7f060006;
         /** 
         These action bar item IDs (menu item IDs) are defined here for
@@ -269,6 +278,8 @@ containing a value of this type.
     
          */
         public static final int action_next=0x7f060005;
+<<<<<<< HEAD
+<<<<<<< HEAD
         public static final int action_previous=0x7f06002c;
         public static final int action_settings=0x7f06002d;
         public static final int action_toggle=0x7f06002a;
@@ -310,6 +321,49 @@ containing a value of this type.
         public static final int urlName=0x7f06001a;
         public static final int urlName2=0x7f06001c;
         public static final int webView1=0x7f060028;
+=======
+=======
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
+        public static final int action_previous=0x7f060027;
+        public static final int action_settings=0x7f060028;
+        public static final int action_toggle=0x7f060025;
+        public static final int btnFeed=0x7f06000e;
+        public static final int btnLogin=0x7f060009;
+        public static final int btnLogout=0x7f06000a;
+        public static final int button=0x7f060018;
+        public static final int button1=0x7f060021;
+        public static final int button2=0x7f06001a;
+        public static final int container=0x7f06000b;
+        public static final int content=0x7f060013;
+        public static final int delete_button=0x7f06001c;
+        public static final int expanded_image=0x7f060012;
+        public static final int hybrid=0x7f060004;
+        public static final int icon=0x7f06001d;
+        public static final int imageView=0x7f060022;
+        public static final int label=0x7f06001e;
+        public static final int list=0x7f06000d;
+        public static final int listV=0x7f060015;
+        public static final int listV1=0x7f06001b;
+        public static final int listview=0x7f06001f;
+        public static final int loading_spinner=0x7f06000c;
+        public static final int mainLayout=0x7f060020;
+        public static final int none=0x7f060000;
+        public static final int normal=0x7f060001;
+        public static final int page1=0x7f060014;
+        public static final int page2=0x7f060016;
+        public static final int pager=0x7f06000f;
+        public static final int satellite=0x7f060002;
+        public static final int terrain=0x7f060003;
+        public static final int textView=0x7f060023;
+        public static final int thumb_button_1=0x7f060010;
+        public static final int thumb_button_2=0x7f060011;
+        public static final int urlName=0x7f060017;
+        public static final int urlName2=0x7f060019;
+        public static final int webView1=0x7f060024;
+<<<<<<< HEAD
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
+=======
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
     }
     public static final class integer {
         public static final int card_flip_time_full=0x7f080001;

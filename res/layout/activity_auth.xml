@@ -73,6 +73,8 @@
                 android:layout_below="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
+<<<<<<< HEAD
                   android:background="@drawable/newaccount"
                 />
         
@@ -83,6 +85,13 @@
     
     
    
+=======
+=======
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
+                android:text="logout"/>
+         
+    </LinearLayout>
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
     
 </LinearLayout>
 </ScrollView>
