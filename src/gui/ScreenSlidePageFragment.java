@@ -173,6 +173,7 @@ public class ScreenSlidePageFragment extends Fragment implements OnClickListener
 		//listView1.setAdapter(_feedManager.articleAdapter);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 		// change 2
 		inputSearch = (EditText) rootView.findViewById(R.id.inputSearch);
 		
@@ -182,6 +183,8 @@ public class ScreenSlidePageFragment extends Fragment implements OnClickListener
 		
 		logout1 = (Button) rootView.findViewById(R.id.button3);
 		logout1.setOnClickListener(this);
+=======
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
 =======
 >>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
 =======

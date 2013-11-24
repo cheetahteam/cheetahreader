@@ -265,6 +265,9 @@ containing a value of this type.
         public static final int accounts_tester_account_types_spinner_label=0x7f060007;
         public static final int action_add_item=0x7f060026;
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
+=======
 >>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
 =======
 >>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
@@ -278,6 +281,7 @@ containing a value of this type.
     
          */
         public static final int action_next=0x7f060005;
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
         public static final int action_previous=0x7f06002c;
@@ -324,6 +328,8 @@ containing a value of this type.
 =======
 =======
 >>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
+=======
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
         public static final int action_previous=0x7f060027;
         public static final int action_settings=0x7f060028;
         public static final int action_toggle=0x7f060025;
@@ -361,6 +367,9 @@ containing a value of this type.
         public static final int urlName2=0x7f060019;
         public static final int webView1=0x7f060024;
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
+=======
 >>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
 =======
 >>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
