@@ -245,6 +245,9 @@ int id urlName2 0x7f060019
 int id webView1 0x7f060024
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
+=======
 >>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
 =======
 >>>>>>> bc4d2de59c2839280e7d05f4fbfd633ad80f7b36
