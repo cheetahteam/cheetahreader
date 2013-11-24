@@ -30,20 +30,25 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 //modified
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.auth.AuthActivity;
 import com.example.tokentest.ActionManager;
 import com.example.tokentest.Article;
 import com.example.tokentest.Feed;
@@ -58,7 +63,7 @@ import com.example.tokentest.Simplecta;
  * <p>This class is used by the {@link CardFlipActivity} and {@link
  * ScreenSlideActivity} samples.</p>
  */
-public class ScreenSlidePageFragment extends Fragment {
+public class ScreenSlidePageFragment extends Fragment implements OnClickListener {
 	// modified spot
 	TextView view ;
 	TextView view1 ;
@@ -73,6 +78,12 @@ public class ScreenSlidePageFragment extends Fragment {
 	
 	private Activity _activity;
 	
+	
+	// change 1
+		Button logout,  logout1;
+		// change 2
+		EditText inputSearch;
+	
 	//does the screen update
 	private boolean updateFlag = false;
 	private Handler handeler = new Handler();
@@ -80,8 +91,10 @@ public class ScreenSlidePageFragment extends Fragment {
 	
 		@Override
 		public void run() {
-			if( _feedManager.isUpdated == true){
-				_feedManager.isUpdated = false;
+			if(_actionManager.dataUpdated == true){
+				Log.d("shit", "data update checker");
+				
+				_actionManager.dataUpdated = false;
 				_feedManager.articleAdapter.notifyDataSetChanged();
 				_feedManager.feedAdapter.notifyDataSetChanged();
 				
@@ -122,8 +135,6 @@ public class ScreenSlidePageFragment extends Fragment {
 	 }
 	
 	public ScreenSlidePageFragment() {
-		_actionManager = ActionManager.getInstance();
-		_actionManager.updateNow();
 		handeler.postDelayed(dataUpdateChecker, 0);
 	}
 	
@@ -139,6 +150,13 @@ public class ScreenSlidePageFragment extends Fragment {
 	    mPageNumber = getArguments().getInt(ARG_PAGE);
 	   
 	    _feedManager = FeedManager.getInstance();
+	    _actionManager = ActionManager.getInstance();
+	    if(mPageNumber==0){
+	    	_feedManager.articleAdapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
+	    } else if(mPageNumber==1){
+	    	_feedManager.feedAdapter = new AdapterFeed(this.getActivity(), R.layout.row, _feedManager);
+	    }
+		_actionManager.updateNow();
 	
 	}
 	
@@ -148,12 +166,20 @@ public class ScreenSlidePageFragment extends Fragment {
 		ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
 		listView = (ListView) rootView.findViewById(R.id.listV);
 		listView1 = (ListView) rootView.findViewById(R.id.listV1);
-		_feedManager.articleAdapter = new AdapterArticle(this.getActivity(),R.layout.row, _feedManager );
-		_feedManager.feedAdapter = new AdapterFeed(this.getActivity(), R.layout.row, _feedManager);
 		//articles
 		listView.setAdapter(_feedManager.articleAdapter );
-		//feeds
-		listView1.setAdapter(_feedManager.feedAdapter);
+		//feeds 
+		//add this back when parsing feed works
+		//listView1.setAdapter(_feedManager.articleAdapter);
+		// change 2
+		inputSearch = (EditText) rootView.findViewById(R.id.inputSearch);
+		
+
+		logout = (Button) rootView.findViewById(R.id.button1);
+		logout.setOnClickListener(this);
+		
+		logout1 = (Button) rootView.findViewById(R.id.button3);
+		logout1.setOnClickListener(this);
         
 		listView.setOnItemClickListener(new OnItemClickListener() {
 	   
@@ -187,8 +213,6 @@ public class ScreenSlidePageFragment extends Fragment {
 				//	String product = ((TextView) view).getText().toString();
 				Feed feed = new Feed();
 				// article =  (Article) parent.getAdapter().getItem(position);
-				Log.d("new shit", "id:"+id);
-				Log.d("new shit", "position:"+position);
 				feed = _feedManager.getFeed((int)id);
 				String feedUrl = feed.getFeedLink();
 				
@@ -198,8 +222,36 @@ public class ScreenSlidePageFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
+		
+		// change2 
+		inputSearch.addTextChangedListener(new TextWatcher() {
+		     
+		    @Override
+		    public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+		        // When user changed the Text
+		    	_feedManager.articleAdapter.getFilter().filter(cs);   
+		    }
+		     
+		    @Override
+		    public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+		            int arg3) {
+		        // TODO Auto-generated method stub
+		         
+		    }
+		     
+		    @Override
+		    public void afterTextChanged(Editable arg0) {
+		        // TODO Auto-generated method stub                          
+		    }
+
+		
+		});
 	
 	        
+		
+		
+		
+		
 	  // view = (TextView) rootView.findViewById(R.id.textshow);
 	  // view1 = (TextView) rootView.findViewById(R.id.textshow1);
 	     
@@ -232,5 +284,24 @@ public class ScreenSlidePageFragment extends Fragment {
 	 */
 	public int getPageNumber() {
 	    return mPageNumber;
+	}
+
+	@Override
+	public void onClick(View v) {
+		
+		if(v==logout)
+		{
+			Intent i = new Intent(this.getActivity(), AuthActivity.class);
+			this.getActivity().startActivity(i);
+			
+		}
+		else if(v==logout1)
+		{
+			Intent i = new Intent(this.getActivity(), AuthActivity.class);
+			this.getActivity().startActivity(i);
+			
+		}	
+		
+		
 	}
 }

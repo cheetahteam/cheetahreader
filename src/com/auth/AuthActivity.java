@@ -32,7 +32,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 @SuppressLint("NewApi")
-public class AuthActivity extends Activity {
+public class AuthActivity extends Activity implements OnClickListener {
 	 
 	private AuthPreferences 						_authPreferences;
 	private AccountManager 							_accountManager;
@@ -42,6 +42,10 @@ public class AuthActivity extends Activity {
 	private static final String SCOPE = 			"ah";//"oauth2:https://www.googleapis.com/auth/userinfo.profile";
   	private static final int AUTHORIZATION_CODE = 	1993;
 	
+  	
+ 	// change 1
+	Button newaccount;
+  	
   	/** progress dialog to show user that the update is processing. */
     //ProgressDialog dialog;
     
@@ -68,6 +72,11 @@ public class AuthActivity extends Activity {
 		//}
 		 * 
 		 */
+		
+	//  change 1
+			 newaccount = (Button) findViewById(R.id.btnnewaccount);
+	         newaccount.setOnClickListener(this);
+		
 		initializeFetchButton();
 		
 	}
@@ -218,7 +227,8 @@ public class AuthActivity extends Activity {
 	    		this.dialog.dismiss();
 	        }
 	    	if ( strToken != null ) {
-	    		Toast.makeText(getApplicationContext(), "token: " + strToken, Toast.LENGTH_SHORT  ).show();
+	    		// change on comment Toast
+	    		//Toast.makeText(getApplicationContext(), "token: " + strToken, Toast.LENGTH_SHORT  ).show();
 	    		doCoolAuthenticatedStuff();
 	    		
 	    	}
@@ -233,5 +243,21 @@ public class AuthActivity extends Activity {
 		//}
     	super.onDestroy();
     }
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		
+		if(v==newaccount)
+			
+		{
+			_accountManager= AccountManager.get(getApplicationContext());
+			_accountManager.addAccount("com.google", null, null, null, this, 
+		      null, null);
+			
+		}
+		
+		
+	}
 	
 }

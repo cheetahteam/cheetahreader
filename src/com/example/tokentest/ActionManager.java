@@ -8,10 +8,12 @@ import android.os.AsyncTask;
 /*
  * only Action manager should be interacting with Simplecta
  */
-public class ActionManager extends AsyncTask<Void, Void, Void>{
+public class ActionManager{
 	private Simplecta simplecta;
 	private Queue<Action> queue;
 	private FeedManager feedManager;
+	public boolean dataUpdated = false;
+	private boolean queueExecuting = false;
 	
 	private static ActionManager instance = null;
 	
@@ -30,9 +32,9 @@ public class ActionManager extends AsyncTask<Void, Void, Void>{
 	
 	
 	//updates screen imediatly
-	public boolean updateNow(){
+	public void updateNow(){
 		queue.add(new Action(Action.ACTION.UPDATE, null));
-		return this.executeQueue();
+		execute();
 	}
 	
 	
@@ -66,38 +68,49 @@ public class ActionManager extends AsyncTask<Void, Void, Void>{
 				return this.simplecta.unsubscribe(action.data);
 			case UPDATE:
 				try {
-					return this.feedManager.updateFeeds(this.simplecta.getAllURL());
+					return this.feedManager.updateFeeds(this.simplecta.showAll());
 				} catch (Exception e) {
 					e.printStackTrace();
 					return false;
 				}
 					
-			}
+		}
+		
 		
 		return false;
 		
 	}
 	
+	void execute(){
+		ActionWorker worker = new ActionWorker();
+		worker.execute();
+	}
+	
 	//goes through the entire queue and runs every action
 	private boolean executeQueue(){
-		
+		if( queueExecuting )
+			return false;
+		queueExecuting = true;
 		Action action = null;
 		while(this.queue.size()!=0){
 			action = this.queue.peek();
-			if(this.runAction(action)==false){
-				this.queue.remove();
+			if(this.runAction(action)!=false){
+				this.queue.remove(action);
 				break;
 			}
 		}
+		queueExecuting = false;
+		dataUpdated = true;
 		return true;
 	}
-
-	@Override
-	protected Void doInBackground(Void... params) {
-		// TODO sleep for 20 seconds
-		while(true){
-			this.executeQueue();
-			
+	
+	class ActionWorker extends AsyncTask<Void, Void, Void>{
+		@Override
+		protected Void doInBackground(Void... params) {
+			// TODO sleep for 20 seconds
+				executeQueue();
+				return null;
 		}
 	}
+	
 }

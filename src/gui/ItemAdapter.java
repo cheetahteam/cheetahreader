@@ -34,7 +34,7 @@ public class ItemAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View rowView = inflater.inflate(rowResourceId, parent, false);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
+       // ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
         TextView textView = (TextView) rowView.findViewById(R.id.textView);
 
         int id = Integer.parseInt(Ids[position]);
@@ -51,7 +51,7 @@ public class ItemAdapter extends ArrayAdapter<String> {
         // load image as Drawable
         Drawable d = Drawable.createFromStream(ims, null);
         // set image to ImageView
-        imageView.setImageDrawable(d);
+        //imageView.setImageDrawable(d);
         return rowView;
 
     }

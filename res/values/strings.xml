@@ -70,5 +70,6 @@
     <string name="title_activity_update">UpdateActivity</string>
     <string name="title_activity_feed">FeedActivity</string>
     <string name="updateFeeds">Update Feeds</string>
+    <string name="update">Update</string>
 
 </resources>

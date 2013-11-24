@@ -1,55 +1,89 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/main_background"
+    android:id="@+id/mainLayout">
+  <!--  change on Relative Layout -->
+  
+  <!--  change on list view tag -->
+
+<ScrollView
+        
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dip"
+        android:layout_marginLeft="100dip"
+        >
+        
     
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <TextView android:id="@+id/accounts_tester_account_types_spinner_label"
+         <TextView android:id="@+id/accounts_tester_account_types_spinner_label"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:text="@string/account"/>
+                  android:background="@drawable/choose_act"
+                  android:layout_marginLeft="30dip"
+                  />
 
-        <Spinner
+       <Spinner
+            
+            android:layout_marginLeft="30dip"
             android:id="@+id/accounts_tester_account_types_spinner"
-            android:layout_width="match_parent"
+            
+            android:layout_below="@+id/accounts_tester_account_types_spinner_label"
+            android:layout_width="300dip"
+            android:background="@color/white"
+            android:paddingLeft="20dip"
+            android:paddingTop="10dip"
+            android:paddingRight="20dip"
+            android:paddingBottom="10dip"
             android:layout_height="wrap_content" />
 
-        </LinearLayout>
+        </RelativeLayout>
     
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     <RelativeLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:layout_marginTop="150dip"
             android:layout_height="wrap_content">
 
         <Button
+                 android:layout_marginLeft="60dip"
                 android:id="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login"/>
+                  android:background="@drawable/loginbutton"
+                />
          
-    </LinearLayout>
-    
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <Button
-                android:id="@+id/btnLogout"
+        
+         <Button
+                 android:layout_marginLeft="20dip"
+                 
+                android:id="@+id/btnnewaccount"
+                android:layout_below="@+id/btnLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/logout"/>
-         
-    </LinearLayout>
+                  android:background="@drawable/newaccount"
+                />
+        
+    </RelativeLayout>
+    
+    
+    
+    
+    
+   
     
 </LinearLayout>
 </ScrollView>
+</RelativeLayout>

@@ -10,6 +10,20 @@ public class Article {
 	private String _strPeekLink;
 	private String _strDatakey;
 	
+	// change 1
+		static private boolean _markread; // markread
+		
+		public void setMarkread(boolean mk) 
+		{
+			 _markread = mk;
+			
+		}
+		
+		public boolean getMarkread()
+		{
+			return _markread;
+		}
+	
 	public void setFeedName(String strFeedName){_strFeedName=strFeedName;}
 	public String getFeedName() {return _strFeedName;}
 	public void setFeedLink(String strFeedLink){_strFeedLink=strFeedLink;}

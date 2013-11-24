@@ -36,6 +36,8 @@
             />
 
         
+        
+        
        
         
          
@@ -52,15 +54,39 @@
         android:orientation="vertical"
         >
        
+             
+             
+             <!-- Editext for Search -->
+    <EditText android:id="@+id/inputSearch"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search Feeds.."
+        android:inputType="textVisiblePassword"/>
            
            <ListView
                android:layout_width="wrap_content"
-               android:layout_height="700dip"
+               android:layout_below="@+id/inputSearch"
+               android:layout_height="600dip"
               android:background="@drawable/bar2"
                android:id="@+id/listV"
-               android:layout_marginTop="-15dip"
+               android:layout_marginBottom="15dip"
                
                />
+           
+           
+            
+            
+            <Button android:id="@+id/button1"
+          
+           
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listV"
+            android:background="@drawable/logoutbutton"
+            />
+            
+            
+             
              
         </RelativeLayout>
         
@@ -128,9 +154,23 @@
                android:id="@+id/listV1"
                
                />
+        
+        
+         <Button android:id="@+id/button3"
+           android:layout_marginTop="10dip"
+           
+           
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/listV1"
+            android:background="@drawable/logoutbutton"
+            />
        
          </RelativeLayout>
          
+         
+         
+        
          
  
      

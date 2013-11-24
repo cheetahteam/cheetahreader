@@ -61,7 +61,7 @@ public class AdapterFeed extends ArrayAdapter<Feed> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View rowView = inflater.inflate(rowResourceId, parent, false);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
+       // ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
         TextView textView = (TextView) rowView.findViewById(R.id.textView);
 
         //String imageFile = Model.GetbyId(id).IconFile;

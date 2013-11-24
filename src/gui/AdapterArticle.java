@@ -1,10 +1,12 @@
 package gui;
 
 import java.io.IOException;
+
 import java.io.InputStream;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,11 @@ import android.widget.TextView;
 import com.example.tokentest.Article;
 import com.example.tokentest.FeedManager;
 import com.example.tokentest.R;
+
+//change 1
+import android.widget.Button;
+import android.view.View.OnClickListener;
+
 
 public class AdapterArticle extends ArrayAdapter<Article> {
     private Activity activity;
@@ -63,17 +70,103 @@ public class AdapterArticle extends ArrayAdapter<Article> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View rowView = inflater.inflate(rowResourceId, parent, false);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
+        //ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
         TextView textView = (TextView) rowView.findViewById(R.id.textView);
 
         //String imageFile = Model.GetbyId(id).IconFile;
 
-        Article article = _feedManager.getArticle( position );
+       final Article article = _feedManager.getArticle( position );
         
         textView.setText( article.getTitle() );
         
+        
+        
+        
+        
+        
+        // change 1
+        final Button markread = (Button) rowView.findViewById(R.id.markread);
+        
+        
+       
+        
+        textView.setText( article.getTitle() );
+        
+        
+        // change 1
+        
+        
+        
+        textView.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+				
+				String url = article.getPeekLink();
+				Intent intent = new Intent(  activity, WebViewActivity.class);
+				intent.putExtra("URL", url);
+				
+				v.getContext().startActivity(intent);
+				
+			}
+        	
+        	
+        	
+        	
+        });
+        
+        
+        
+        
+        markread.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            	
+            	if(v == markread) {
+                 // if( markread.getBackground() )
+                   
+            	//if(markread.getTag() =="0")
+            	if( article.getMarkread() == false)	
+            	{
+            		
+            		//if ( markread.getBackground().getConstantState()==markread.getResources().getDrawable(R.drawable.blue).getConstantState())
+            	//	{	
+            		
+            		
+                       markread.setBackgroundResource(R.drawable.listviewbuttons2);
+            		//}
+            		 article.setMarkread(true);
+            		
+            	}else
+            	{
+            		// if ( markread.getBackground().getConstantState()==markread.getResources().getDrawable(R.drawable.red).getConstantState())
+            		//{	
+                		
+                        markread.setBackgroundResource(R.drawable.listviewbuttons);
+             	//	}
+            	    //markread.setTag("0");	 
+                    article.setMarkread(false);
+            		
+            	}	
+            		}
+               
+            }
+        });
+        
+        
+        
+        
+        
+        
+        
+        
+        
         // get input stream
-        InputStream ims = null;
+        //InputStream ims = null;
+        
+        
         /*
         try {
             ims = activity.getAssets().open(imageFile);

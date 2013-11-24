@@ -1,13 +1,46 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#a6c"
+    android:background="@drawable/bar2"
     android:padding="16dp"
-    android:gravity="bottom">
-<WebView 
+    
+  >
+ 
+    
+    
+   <Button
+        android:id="@+id/line1"
+        
+        
+        android:focusable="false"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+     
+        
+        android:background="@drawable/homebutton">
+    </Button>
+    
+    
+    
+<WebView
+    
     android:id="@+id/webView1"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="800dip"
+    android:layout_height="680dip"
+     android:layout_below="@+id/line1"
 />
-</LinearLayout>
+   <Button
+        android:id="@+id/line2"
+       
+       
+        android:focusable="false"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/webView1"
+        
+        android:background="@drawable/logoutbutton">
+    </Button>
+    
+
+</RelativeLayout>
