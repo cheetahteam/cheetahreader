@@ -234,6 +234,7 @@ public ArrayList<Article> getAtricleList( String strHTML ) throws Exception {
 		return key;
 		
 	}
+	
 	private ArrayList<Article> extractArticles( Document doc ) {
 
 		if ( doc == null )
@@ -277,6 +278,38 @@ public ArrayList<Article> getAtricleList( String strHTML ) throws Exception {
 		
 	}
 	
+	private ArrayList<Feed> extractFeeds( Document doc ) {
+
+		if ( doc == null )
+		{
+			throw new NullPointerException("Document is null. Unable to Parse html.");
+		}
+		
+		/***** TODO: change this from a iterator to a loop to increase speed *****/
+		
+		// The data starts after the <body> of the html
+		Element content = doc.body();
+		Elements feeds = content.getElementsByClass("largefeedlink");
+		ArrayList<Feed> temFeeds = new ArrayList<Feed>();
+		// Parse and Add every article item to _articles
+		for (Element feed : feeds) {
+			
+		  // Fill the Feed attr
+		  String feedTitle =  feed.text();
+		  String feedLinkHref = feed.attr("href");
+		  Element unsubLink = feed.getElementsByClass("peek").first();
+		  String feedUnsubLink = unsubLink.attr("href");
+		  
+		  // TODO Validate feed
+		  Feed newFeed = new Feed( feedTitle, feedLinkHref, feedUnsubLink );
+		  temFeeds.add( newFeed );
+		  
+		}
+		
+		return temFeeds;
+		
+	}
+	
 	public int findArticle( Article article ) {
 		
 		return _alArticles.indexOf( article );
@@ -290,13 +323,13 @@ public ArrayList<Article> getAtricleList( String strHTML ) throws Exception {
 		
 		return _feeds.indexOf( feed );
 	}
-	public int findFeed( String strFeedKey ) {
+	public int findFeed( String strFeedLink ) {
 		Feed feed = new Feed();
-		feed.setFeedKey( strFeedKey );
+		feed.setFeedLink( strFeedLink );
 		return _feeds.indexOf( feed );
 	}
 	
-	private void fillFeeds() {
+	/*private void fillFeeds() {
 		
 		for( int i = 0; i < _alArticles.size(); ++i ) {
 			
@@ -323,6 +356,8 @@ public ArrayList<Article> getAtricleList( String strHTML ) throws Exception {
 			}
 			
 		}
+		
 	}
+	*/
 
 }

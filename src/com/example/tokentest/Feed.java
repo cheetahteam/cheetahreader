@@ -6,7 +6,7 @@ public class Feed {
 	
 	private String 				_strFeedName;
 	private String 				_strFeedLink;
-	private String 				_strFeedKey;
+	private String 				_strFeedUnsubLink;
 	private ArrayList<Article> 	_articles;
 	
 	
@@ -14,21 +14,21 @@ public class Feed {
 	public String getFeedName() {return _strFeedName;}
 	public void setFeedLink(String strFeedLink){_strFeedLink=strFeedLink;}
 	public String getFeedLink() {return _strFeedLink;}
-	public void setFeedKey(String strFeedKey){_strFeedKey= strFeedKey;}
-	public String getFeedKey() {return _strFeedKey;}
+	public void setFeedUnsubLink(String unsubLink){_strFeedUnsubLink= unsubLink;}
+	public String getFeedUnsubLink() {return _strFeedUnsubLink;}
 	
-	public Feed( String strFName, String strFLink, String strFKey ) {
+	public Feed( String strFName, String strFLink, String unsubLink ) {
 		_articles = new ArrayList<Article>();
 		_strFeedName = strFName;
 		_strFeedLink = strFLink;
-		_strFeedKey = strFKey;
+		_strFeedUnsubLink = unsubLink;
 		
 	}
 	public Feed( ) {
 		_articles = new ArrayList<Article>();
 		_strFeedName = "";
 		_strFeedLink = "";
-		_strFeedKey = "";
+		_strFeedUnsubLink = "";
 		
 	}
 	public void AddArticle( Article article ) {
@@ -48,7 +48,7 @@ public class Feed {
 		
 	    //cast to native object is now safe
 		Feed that = (Feed)rhs;
-		if ( _strFeedKey.equals( that.getFeedKey() ))
+		if ( _strFeedLink.equals( that.getFeedLink() ))
 			return true;
 			
 		return false;
