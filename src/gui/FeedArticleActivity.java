@@ -34,12 +34,12 @@ public class FeedArticleActivity extends ListActivity {
 	 @Override
 	public void onCreate(Bundle icicle) {
 	    super.onCreate(icicle);
-	    feedUrl = (String) getIntent().getSerializableExtra("feedUrl");
+	    feedUrl = (String) getIntent().getSerializableExtra("URL");
 	    feedManager = FeedManager.getInstance();
 		simplecta = Simplecta.getInstance();
 		updateFeed();
 		Log.d("shit", "settng addepter");
-		feedManager.feedArticleAdapter = new AdapterArticle(this,R.layout.row, feedManager );
+		feedManager.feedArticleAdapter = new FeedArticleAdapter(this,R.layout.row, feedManager );
 	    setListAdapter(feedManager.feedArticleAdapter);
 		
 	  }

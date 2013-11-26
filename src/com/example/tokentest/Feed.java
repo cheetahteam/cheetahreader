@@ -7,7 +7,6 @@ public class Feed {
 	private String 				_strFeedName;
 	private String 				_strFeedLink;
 	private String 				_strFeedUnsubLink;
-	private ArrayList<Article> 	_articles;
 	
 	
 	public void setFeedName(String strFeedName){_strFeedName=strFeedName;}
@@ -18,25 +17,16 @@ public class Feed {
 	public String getFeedUnsubLink() {return _strFeedUnsubLink;}
 	
 	public Feed( String strFName, String strFLink, String unsubLink ) {
-		_articles = new ArrayList<Article>();
 		_strFeedName = strFName;
 		_strFeedLink = strFLink;
 		_strFeedUnsubLink = unsubLink;
 		
 	}
 	public Feed( ) {
-		_articles = new ArrayList<Article>();
 		_strFeedName = "";
 		_strFeedLink = "";
 		_strFeedUnsubLink = "";
 		
-	}
-	public void AddArticle( Article article ) {
-		// TODO Error Check
-		_articles.add( article );
-	}
-	public ArrayList<Article> GetArticles() {
-		return _articles;
 	}
 	@Override 
 	public boolean equals( Object rhs ) {

@@ -23,13 +23,13 @@ import com.example.tokentest.R;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 
-public class AdapterArticle extends ArrayAdapter<Article> {
+public class FeedArticleAdapter extends ArrayAdapter<Article> {
 	private Activity activity;
 	private FeedManager _feedManager = FeedManager.getInstance();
 	private static LayoutInflater inflater = null;
 	private final int rowResourceId;
 
-	public AdapterArticle(Activity activity, int textViewResourceId,
+	public FeedArticleAdapter(Activity activity, int textViewResourceId,
 			FeedManager fm) {
 		// _feedManager = FeedManager.getInstance();
 
@@ -49,7 +49,7 @@ public class AdapterArticle extends ArrayAdapter<Article> {
 	}
 
 	public int getCount() {
-		return _feedManager.getArticles().size();
+		return _feedManager.feedArticles.size();
 	}
 
 	/*
@@ -72,7 +72,7 @@ public class AdapterArticle extends ArrayAdapter<Article> {
 
 		// String imageFile = Model.GetbyId(id).IconFile;
 
-		final Article article = _feedManager.getArticle(position);
+		final Article article = _feedManager.feedArticles.get(position);
 
 		textView.setText(article.getTitle());
 
