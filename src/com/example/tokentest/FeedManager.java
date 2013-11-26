@@ -79,7 +79,7 @@ public class FeedManager {
 		Article article = _alArticles.get( nIndex );
 		return article;
 	}
-	public boolean updateFeeds( String strHTML ) throws Exception {
+	public boolean setArticles( String strHTML ) throws Exception {
 		
 		Document doc = null;
 		if ( strHTML == null ) {
@@ -103,7 +103,31 @@ public class FeedManager {
     	return true;
 	}
 	
-	public boolean setArtilceFeeds( String strHTML ) throws Exception {
+public boolean setFeeds( String strHTML ) throws Exception {
+		
+		Document doc = null;
+		if ( strHTML == null ) {
+			Log.e( TAG, "The HTML string is null. cannot parse" );
+			return false;
+		}
+		if ( strHTML == "" ) {
+			Log.e( TAG, "The HTML string is empty. cannot parse" );
+			return false;
+		}
+
+		try {
+			 doc = getDocument( strHTML );
+			 _feeds = extractFeeds( doc );
+		}
+		catch( Exception ex ) {
+			Log.e(TAG, ex.getMessage());
+			return false;
+		}
+    	isUpdated = true;
+    	return true;
+	}
+	
+	public boolean setArticleFeeds( String strHTML ) throws Exception {
 		
 		Document doc = null;
 		if ( strHTML == null ) {
