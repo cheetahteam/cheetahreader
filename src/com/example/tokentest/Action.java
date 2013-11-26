@@ -3,7 +3,7 @@ package com.example.tokentest;
 public class Action {
 
 	enum ACTION{
-		READ,ADD_ATOM,ADD_RSS,UNSUBSCRIBE,UPDATE_ARTICLES, UPDATE_FEEDS
+		READ,UNREAD,ADD_ATOM,ADD_RSS,UNSUBSCRIBE,UPDATE
 	}
 	
 	String data;

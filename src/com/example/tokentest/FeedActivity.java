@@ -110,7 +110,7 @@ public class FeedActivity extends Activity {
 	    		// Get the HTML String from the Simplecta connection
 	    		strArticlesHTML = _simplecta.showAll();
 	    		// Parse the html into the article/feed objects
-				_feedManager.setArticles( strArticlesHTML );
+				_feedManager.updateFeeds( strArticlesHTML );
 	    		//_feedManager.updateFeeds( _simplecta.getAllURL() );
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
