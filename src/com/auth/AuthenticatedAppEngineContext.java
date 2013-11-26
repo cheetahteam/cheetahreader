@@ -13,49 +13,49 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
-
 import android.accounts.AccountsException;
 
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
+import android.util.Log;
 
 public final class AuthenticatedAppEngineContext implements HttpContext {
-  private HttpContext delegate_;
-  private CookieStore cookieStore_;
+	private HttpContext delegate_;
+	private CookieStore cookieStore_;
 
-  public static HttpContext newInstance(Context context, String uri, String authToken )
-      throws AccountsException, AuthenticationException {
-    if (context == null)
-      throw new IllegalArgumentException("context is null");
-    return new AuthenticatedAppEngineContext(context, uri, authToken );
-  }
+	public static HttpContext newInstance( Context context, String uri, String authToken )
+			throws AccountsException, AuthenticationException {
+		if ( context == null )
+			throw new IllegalArgumentException( "context is null" );
+		return new AuthenticatedAppEngineContext( context, uri, authToken );
+	}
 
-  private AuthenticatedAppEngineContext(Context context, String uri, String authToken )
-      throws AccountsException, AuthenticationException {
-    delegate_ = new BasicHttpContext();
+	private AuthenticatedAppEngineContext( Context context, String uri, String authToken )
+			throws AccountsException, AuthenticationException {
+		delegate_ = new BasicHttpContext();
 
-    AndroidHttpClient httpClient = AndroidHttpClient.newInstance(
-        "GetAuthCookieClient", context);
-    try {
-      httpClient.getParams().setBooleanParameter(
-          ClientPNames.HANDLE_REDIRECTS, false);
-      cookieStore_ = new BasicCookieStore();
-      setAttribute(ClientContext.COOKIE_STORE, cookieStore_);
-      HttpGet http_get = new HttpGet(uri
-          + "/_ah/login?continue=http://localhost/&auth=" + authToken);
-      HttpResponse response = httpClient.execute(http_get, this);
-      checkResponse(cookieStore_, response);
-    } catch (IOException e) {
-      throw new AuthenticationException(
-          "error getting the authentication cookie", e);
-    } finally {
-      httpClient.close();
-    }
+		AndroidHttpClient httpClient = AndroidHttpClient.newInstance( "GetAuthCookieClient",
+				context );
+		try {
+			httpClient.getParams().setBooleanParameter( ClientPNames.HANDLE_REDIRECTS, false );
+			cookieStore_ = new BasicCookieStore();
+			setAttribute( ClientContext.COOKIE_STORE, cookieStore_ );
+			HttpGet http_get = new HttpGet( uri + "/_ah/login?continue=http://localhost/&auth="
+					+ authToken );
+			HttpResponse response = httpClient.execute( http_get, this );
+			checkResponse( cookieStore_, response );
+		} catch ( IOException e ) {
+			throw new AuthenticationException( "error getting the authentication cookie", e );
+		} finally {
+			httpClient.close();
+		}
 
-  }
+	}
 
-  private void checkResponse(CookieStore cookieStore, HttpResponse response)
+	private void checkResponse(CookieStore cookieStore, HttpResponse response)
       throws AuthenticationException {
+	  int code = response.getStatusLine().getStatusCode() ;
+	  Log.d("response code",  "" + code );
     if (response.getStatusLine().getStatusCode() != 302) {
       throw new AuthenticationException(
           "authentication response was not a redirect");
@@ -66,62 +66,49 @@ public final class AuthenticatedAppEngineContext implements HttpContext {
     }
   }
 
-  /*
-  private String getAuthenticationToken(Context context)
-      throws AccountsException {
-    AccountManager accountManager = AccountManager.get(context);
-    Account[] accounts = accountManager.getAccountsByType("com.google");
+	/*
+	 * private String getAuthenticationToken(Context context) throws
+	 * AccountsException { AccountManager accountManager =
+	 * AccountManager.get(context); Account[] accounts =
+	 * accountManager.getAccountsByType("com.google");
+	 * 
+	 * if (accounts == null || accounts.length == 0) { throw new
+	 * AccountsException(
+	 * "no account of type 'com.google' found on this device"); }
+	 * 
+	 * try { Account account = accounts[0]; AccountManagerFuture<Bundle>
+	 * accountManagerFuture = accountManager .getAuthToken(account, "ah", true,
+	 * null, null); Bundle authTokenBundle = null; authTokenBundle =
+	 * accountManagerFuture.getResult(); String authToken = authTokenBundle
+	 * .get(AccountManager.KEY_AUTHTOKEN).toString(); return authToken;
+	 * 
+	 * } catch (OperationCanceledException e) { throw new AccountsException(
+	 * "could not get authentication token from account 'com.google'", e); }
+	 * catch (AuthenticatorException e) { throw new AccountsException(
+	 * "could not get authentication token from account 'com.google'", e); }
+	 * catch (IOException e) { throw new AccountsException(
+	 * "could not get authentication token from account 'com.google'", e); } }
+	 */
 
-    if (accounts == null || accounts.length == 0) {
-      throw new AccountsException(
-          "no account of type 'com.google' found on this device");
-    }
+	private boolean isAuthenticationCookiePresent( CookieStore cookieStore ) {
+		for ( Cookie cookie : cookieStore.getCookies() ) {
+			Log.d( "Cookie", cookie.getName() );
+			if ( cookie.getName().equals( "ACSID" ) || cookie.getName().equals( "SACSID" ) )
+				return true;
+		}
+		return false;
+	}
 
-    try {
-      Account account = accounts[0];
-      AccountManagerFuture<Bundle> accountManagerFuture = accountManager
-          .getAuthToken(account, "ah", true, null, null);
-      Bundle authTokenBundle = null;
-      authTokenBundle = accountManagerFuture.getResult();
-      String authToken = authTokenBundle
-          .get(AccountManager.KEY_AUTHTOKEN).toString();
-      return authToken;
+	public Object getAttribute( String id ) {
+		return delegate_.getAttribute( id );
+	}
 
-    } catch (OperationCanceledException e) {
-      throw new AccountsException(
-          "could not get authentication token from account 'com.google'",
-          e);
-    } catch (AuthenticatorException e) {
-      throw new AccountsException(
-          "could not get authentication token from account 'com.google'",
-          e);
-    } catch (IOException e) {
-      throw new AccountsException(
-          "could not get authentication token from account 'com.google'",
-          e);
-    }
-  }
-  */
+	public Object removeAttribute( String id ) {
+		return delegate_.removeAttribute( id );
+	}
 
-  private boolean isAuthenticationCookiePresent(CookieStore cookieStore) {
-    for (Cookie cookie : cookieStore.getCookies()) {
-      if (cookie.getName().equals("ACSID")
-          || cookie.getName().equals("SACSID"))
-        return true;
-    }
-    return false;
-  }
-
-  public Object getAttribute(String id) {
-    return delegate_.getAttribute(id);
-  }
-
-  public Object removeAttribute(String id) {
-    return delegate_.removeAttribute(id);
-  }
-
-  public void setAttribute(String id, Object obj) {
-    delegate_.setAttribute(id, obj);
-  }
+	public void setAttribute( String id, Object obj ) {
+		delegate_.setAttribute( id, obj );
+	}
 
 }
