@@ -36,6 +36,16 @@ public class ActionManager {
 		queue.add( new Action( Action.ACTION.UPDATE_FEEDS, null ) );
 		execute();
 	}
+	
+	public void addRSSFeed( String strFeed ) 
+	{
+		queue.add( new Action( Action.ACTION.ADD_RSS, strFeed ) );
+	}
+	public void addATOMFeed( String strFeed ) 
+	{
+		queue.add( new Action( Action.ACTION.ADD_ATOM, strFeed ) );
+	}
+
 
 	// adds a action to the queue
 	public void addAction( Action action ) {

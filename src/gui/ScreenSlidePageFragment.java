@@ -170,7 +170,7 @@ public class ScreenSlidePageFragment extends Fragment implements OnClickListener
 		listView.setAdapter(_feedManager.articleAdapter );
 		//feeds 
 		//add this back when parsing feed works
-		//listView1.setAdapter(_feedManager.articleAdapter);
+		listView1.setAdapter(_feedManager.feedAdapter);
 		// change 2
 		inputSearch = (EditText) rootView.findViewById(R.id.inputSearch);
 		

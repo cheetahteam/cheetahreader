@@ -321,7 +321,7 @@ public ArrayList<Article> getAtricleList( String strHTML ) throws Exception {
 		  // Fill the Feed attr
 		  String feedTitle =  feed.text();
 		  String feedLinkHref = feed.attr("href");
-		  Element unsubLink = feed.getElementsByClass("peek").first();
+		  Element unsubLink = feed.siblingElements().first();
 		  String feedUnsubLink = unsubLink.attr("href");
 		  
 		  // TODO Validate feed

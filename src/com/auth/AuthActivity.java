@@ -58,7 +58,12 @@ public class AuthActivity extends Activity implements OnClickListener {
 		_accountNames = getAccountNames( this );
 		_authPreferences = new AuthPreferences(this);
 		
-	    
+	}
+ 
+	@Override
+	public void onResume() {
+		super.onResume();
+		
 		// TODO if there are no account names,
 		// ask the user to create one
 		_accountTypesSpinner = initializeSpinner(
@@ -80,7 +85,6 @@ public class AuthActivity extends Activity implements OnClickListener {
 		initializeFetchButton();
 		
 	}
- 
 	private Spinner initializeSpinner( int id, String[] values ) {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AuthActivity.this,
                 android.R.layout.simple_spinner_item, values);

@@ -253,7 +253,7 @@ public class Simplecta {
 		HttpResponse result = null;
 		StringBuilder whole = new StringBuilder();
 		try {
-			result = prepConnection("/feed/");
+			result = prepConnection("/feeds/");
 
             BufferedReader in = new BufferedReader(new InputStreamReader(result.getEntity().getContent()));
             String inputLine;
