@@ -32,6 +32,10 @@ public class ActionManager {
 
 	// updates screen imediatly
 	public void updateNow() {
+		//adding unsubscription and read
+		updateArticleData();
+		updateFeedData();
+		
 		queue.add( new Action( Action.ACTION.UPDATE_ARTICLES, null ) );
 		queue.add( new Action( Action.ACTION.UPDATE_FEEDS, null ) );
 		execute();
@@ -93,9 +97,27 @@ public class ActionManager {
 
 	}
 
-	void execute() {
+	private void execute() {
 		ActionWorker worker = new ActionWorker();
 		worker.execute();
+	}
+	
+	void updateFeedData(){
+		int size = feedManager.getArticles().size();
+		for(int i =0; i<size; i++){
+			if(feedManager.getArticle(i).getMarkread() == true){
+				queue.add( new Action( Action.ACTION.READ, feedManager.getArticle(i).getKey() ) );
+			}
+		}
+	}
+	
+	void updateArticleData(){
+		int size = feedManager.getArticles().size();
+		for(int i =0; i<size; i++){
+			if(feedManager.getFeed(i).getMarkSubscribe() == true){
+				queue.add( new Action( Action.ACTION.READ, feedManager.getFeed(i).getFeedLink() ) );
+			}
+		}
 	}
 
 	// goes through the entire queue and runs every action
