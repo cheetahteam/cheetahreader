@@ -4,9 +4,11 @@ import java.io.InputStream;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,33 +62,44 @@ public class AdapterFeed extends ArrayAdapter<Feed> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        View rowView = inflater.inflate(rowResourceId, parent, false);
-       // ImageView imageView = (ImageView) rowView.findViewById(R.id.imageView);
+    	View rowView = inflater.inflate(rowResourceId, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.textView);
+        final ImageView markreadButton = (ImageView) rowView.findViewById(R.id.markread);
+		
 
-        //String imageFile = Model.GetbyId(id).IconFile;
-
-        Feed feed = _feedManager.getFeed( position );
-        
+        final Feed feed = _feedManager.getFeed( position );
         textView.setText( feed.getFeedName() );
-        
-        // get input stream
-        InputStream ims = null;
-        /*
-        try {
-            ims = activity.getAssets().open(imageFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // load image as Drawable
-        Drawable d = Drawable.createFromStream(ims, null);
-        // set image to ImageView
-        imageView.setImageDrawable(d);
-        */
+        markreadButton.setBackgroundResource(R.drawable.listviewbuttons);
         
         rowView.setTag( position );
         
-        return rowView;
+        textView.setOnClickListener(new OnClickListener(){
 
+			@Override
+			public void onClick(View v) {
+				String url = feed.getFeedLink();
+				Intent intent = new Intent(  activity, FeedArticleActivity.class);
+				intent.putExtra("URL", url);
+				
+				v.getContext().startActivity(intent);
+			}
+        	
+        });
+		
+		markreadButton.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				
+				if( feed.toggleMarkSubscribe() ){
+					markreadButton.setBackgroundResource(R.drawable.listviewbuttons2);
+				} else {
+					markreadButton.setBackgroundResource(R.drawable.listviewbuttons);
+				}
+			}
+        	
+        });
+        
+        return rowView;
     }
 }
