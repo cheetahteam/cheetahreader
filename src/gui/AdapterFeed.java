@@ -40,7 +40,7 @@ public class AdapterFeed extends ArrayAdapter<Feed> {
     }
 
     public int getCount() {
-        return _feedManager.getArticles().size();
+        return _feedManager.getFeeds().size();
     }
 /*
     public Article getItem(Article position) {
