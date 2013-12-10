@@ -35,6 +35,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 import com.auth.AuthPreferences;
+import com.example.tokentest.ActionManager;
 import com.example.tokentest.Article;
 import com.example.tokentest.FeedManager;
 import com.example.tokentest.Simplecta;
@@ -116,7 +117,7 @@ public class MainFragment extends FragmentActivity {
 
         // Add either a "next" or "finish" button to the action bar, depending on which page
         // is currently selected.
-        MenuItem item = menu.add(Menu.NONE, R.id.action_next, Menu.NONE,
+        MenuItem item = menu.add(Menu.NONE, R.id.action_next, 100,
                 (mPager.getCurrentItem() == mPagerAdapter.getCount() - 1)
                         ? R.string.action_finish
                         : R.string.action_next);
@@ -145,6 +146,20 @@ public class MainFragment extends FragmentActivity {
                 // will do nothing.
                 mPager.setCurrentItem(mPager.getCurrentItem() + 1);
                 return true;
+            case R.id.action_logout:
+                // Advance to the next step in the wizard. If there is no next step, setCurrentItem
+                // will do nothing.
+                //mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+            	this.finish();
+                return true;
+            case R.id.action_update:
+                // Advance to the next step in the wizard. If there is no next step, setCurrentItem
+                // will do nothing.
+                //mPager.setCurrentItem(mPager.getCurrentItem() + 1);
+            	ActionManager am = ActionManager.getInstance();
+            	am.updateNow();
+                return true;
+                
         }
 
         return super.onOptionsItemSelected(item);

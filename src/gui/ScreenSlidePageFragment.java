@@ -301,7 +301,5 @@ public class ScreenSlidePageFragment extends Fragment implements OnClickListener
 			this.getActivity().startActivity(i);
 			
 		}	
-		
-		
 	}
 }

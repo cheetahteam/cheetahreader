@@ -26,7 +26,10 @@
     <string name="title_layout_changes">Layout Changes</string>
     <string name="title_template_step"> <xliff:g id="step_name">%2$s</xliff:g></string>
    
-
+	<!-- Menu -->
+	<string name="logout">Logout</string>
+	<string name="update">Update</string>
+	
     <!-- Actions -->
     <string name="action_toggle">Toggle indicator</string>
     <string name="action_add_item">Add item</string>
@@ -70,6 +73,5 @@
     <string name="title_activity_update">UpdateActivity</string>
     <string name="title_activity_feed">FeedActivity</string>
     <string name="updateFeeds">Update Feeds</string>
-    <string name="update">Update</string>
 
 </resources>
