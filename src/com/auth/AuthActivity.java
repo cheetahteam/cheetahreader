@@ -68,15 +68,15 @@ public class AuthActivity extends Activity implements OnClickListener {
 		// ask the user to create one
 		_accountTypesSpinner = initializeSpinner(
                 R.id.accounts_tester_account_types_spinner, _accountNames );
-		/*
-		//if (_authPreferences.getUser() != null
-			//	&& _authPreferences.getToken() != null) {
-			//doCoolAuthenticatedStuff();
-		//} else {
-			//initializeFetchButton();
-		//}
-		 * 
-		 */
+		
+		/*if (_authPreferences.getUser() != null
+				&& _authPreferences.getToken() != null) {
+			doCoolAuthenticatedStuff();
+		} else {
+			initializeFetchButton();
+		}
+		*/
+
 		
 	//  change 1
 			 newaccount = (Button) findViewById(R.id.btnnewaccount);
