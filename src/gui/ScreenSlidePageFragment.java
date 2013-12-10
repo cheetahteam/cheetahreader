@@ -172,7 +172,6 @@ public class ScreenSlidePageFragment extends Fragment implements OnClickListener
 		//add this back when parsing feed works
 		listView1.setAdapter(_feedManager.feedAdapter);
 		// change 2
-		inputSearch = (EditText) rootView.findViewById(R.id.inputSearch);
 		
 
 		logout = (Button) rootView.findViewById(R.id.button1);
@@ -230,6 +229,9 @@ public class ScreenSlidePageFragment extends Fragment implements OnClickListener
 		    public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
 		        // When user changed the Text
 		    	_feedManager.articleAdapter.getFilter().filter(cs);   
+		    	_feedManager.feedAdapter.getFilter().filter(cs); 
+		    	_feedManager.articleAdapter.notifyDataSetChanged();
+				_feedManager.feedAdapter.notifyDataSetChanged();
 		    }
 		     
 		    @Override
