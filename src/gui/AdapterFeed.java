@@ -64,12 +64,12 @@ public class AdapterFeed extends ArrayAdapter<Feed> {
 
     	View rowView = inflater.inflate(rowResourceId, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.textView);
-        final ImageView markreadButton = (ImageView) rowView.findViewById(R.id.markread);
+        //final ImageView markreadButton = (ImageView) rowView.findViewById(R.id.markread);
 		
 
         final Feed feed = _feedManager.getFeed( position );
         textView.setText( feed.getFeedName() );
-        markreadButton.setBackgroundResource(R.drawable.listviewbuttons);
+        //markreadButton.setBackgroundResource(R.drawable.listviewbuttons);
         
         rowView.setTag( position );
         
@@ -86,20 +86,22 @@ public class AdapterFeed extends ArrayAdapter<Feed> {
         	
         });
 		
-		markreadButton.setOnClickListener(new OnClickListener(){
+		/*
+		  markreadButton.setOnClickListener(new OnClickListener(){
+
 
 			@Override
 			public void onClick(View v) {
 				
 				if( feed.toggleMarkSubscribe() ){
-					markreadButton.setBackgroundResource(R.drawable.listviewbuttons2);
+					//markreadButton.setBackgroundResource(R.drawable.listviewbuttons2);
 				} else {
-					markreadButton.setBackgroundResource(R.drawable.listviewbuttons);
+					//markreadButton.setBackgroundResource(R.drawable.listviewbuttons);
 				}
 			}
         	
         });
-        
+        */
         return rowView;
     }
 }
